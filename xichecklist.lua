@@ -1,6 +1,6 @@
 _addon.name     = 'xichecklist'
 _addon.author   = 'HiPotion'
-_addon.version  = '0.17.8'
+_addon.version  = '0.17.9'
 _addon.commands = {'xichecklist', 'xic', 'checklist', 'clist'}
 
 require('sets')
@@ -309,7 +309,7 @@ local cmds = {
 	scale = S{'scale'},
 }
 
-function update_maintab()
+update_maintab = function()
 	
 	tabs[1].items = {}
 	
@@ -435,7 +435,7 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 	if (id == 0x008) then
 		tab_logs.zones = warps_util.log_visitedzones(data)
 	end
-	
+	-- check current mastery rank
 	if id == 0x01B then
 		local parseddata = packets.parse('incoming', data)
 		if (parseddata['Mastery Rank'] > playertracker.mastery_rank) then
@@ -450,7 +450,6 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 			playertracker:save()
 		end
 	end
-	
 	-- do quests
 	if id == 0x056 then
 		local p = packets.parse('incoming', data)
@@ -493,7 +492,6 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 		end
 		xichecklist_updatetabs('quests')
     end
-	
 	-- crafting skills
 	if id == 0x062 then
 		local p = packets.parse('incoming', data)
@@ -533,7 +531,6 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 			xichecklist_updatetabs('monstrosity')
 		end
 	end
-	
 	-- handle npc menu
 	if (id == 0x033) or (id == 0x034) then
 		menus_util.handle_npc_menu(data)
@@ -544,12 +541,10 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 		menus_util.add_title(parseddata.Title)
 		xichecklist_updatemenulogs()
 	end
-	
 	if id == 0x05C then
 		if menu_current.npcindex then menus_util.handle_npc_submenu(data) end
 		xichecklist_updatemenulogs()
 	end
-	
 	-- do RoE
 	if id == 0x112 then
 		if (not roe_data) then roe_data = '' end
@@ -561,7 +556,6 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 			xichecklist_updatetabs('roe')
 		end
 	end
-	
 	-- do MMM
 	if id == 0x0AD then
 		local parseddata = packets.parse('incoming', data)
@@ -570,17 +564,15 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 		tab_logs.mmmrunes = mmm_util.log_runes()
 		xichecklist_updatetabs('battlecontent')
 	end
-	
 	if id == 0x052 then
 		-- claer npc menu
 		menus_util.reset_current_menu()
 	end
-
 	throttled_update()
 end)
 
 THROTTLED = false
-function throttled_update()
+throttled_update = function()
 	if THROTTLED then return end
 	THROTTLED = true
 	coroutine.sleep(0.1)
@@ -600,7 +592,7 @@ windower.register_event('outgoing chunk', function(id, data, modified, injected,
 	end
 end)
 
-function xichecklist_updatemenulogs()
+xichecklist_updatemenulogs = function()
 	tab_logs.outposts = menus_util.log_outposts()
 	tab_logs.protowaypoints = menus_util.log_protowaypoints()
 	tab_logs.fishes = menus_util.log_fishes()
@@ -615,7 +607,7 @@ function xichecklist_updatemenulogs()
 	tab_logs.vorseals = menus_util.log_vorseals()
 end
 
-function xichecklist_updatetabs(tab)
+xichecklist_updatetabs = function(tab)
 	if not player then return false end
 	tabs[4].items = {} -- reset tab content
 	tabs[5].items = {} -- reset tab content
@@ -686,7 +678,6 @@ function xichecklist_updatetabs(tab)
 	append_header(4, 'Type of Fishes Caught (%d/%d)', playertracker.fishes_completed, playertracker.fishes_total)
 	append_addonhelp(4, 'You must talk to \\cs(255,255,255)Katsunaga\\cr @ \\cs(50,150,255)Mhuaura (H-9)\\cr \\cs(255,255,255)(Menu: Types of fishes caught)\\cr', playertracker.talk_to_npc.katsunaga)
 	append_items(tabs[4].items, tab_logs.fishes)
-	
 	-- log keyitems
 	append_header(5, 'Permanent Key Items (%d/%d)', playertracker.Permanent_Key_Items_completed, playertracker.Permanent_Key_Items_total)
 	append_items(tabs[5].items, check_keyitems('Permanent Key Items'))
@@ -703,7 +694,6 @@ function xichecklist_updatetabs(tab)
 	append_items(tabs[5].items, tab_logs.atmacite)
 	append_header(5, 'Claim Slips (%d/%d)', playertracker.Claim_Slips_completed, playertracker.Claim_Slips_total)
 	append_items(tabs[5].items, check_keyitems('Claim Slips'))
-	
 	-- log spells and trusts
 	append_header(6, 'White Magic (%d/%d)', playertracker.WhiteMagic_completed, playertracker.WhiteMagic_total)
 	append_items(tabs[6].items, log_spells('WhiteMagic'))
@@ -721,7 +711,6 @@ function xichecklist_updatetabs(tab)
 	append_items(tabs[6].items, log_spells('Geomancy'))
 	append_header(6, 'Trust Magic (%d/%d)', playertracker.Trust_completed, playertracker.Trust_total)
 	append_items(tabs[6].items, log_spells('Trust'))
-	
 	-- log warps
 	append_header(7, 'Home Points (%d/%d)', playertracker.homepoints_completed, playertracker.homepoints_total)
 	append_items(tabs[7].items, tab_logs.homepoints)
@@ -745,10 +734,8 @@ function xichecklist_updatetabs(tab)
 	append_items(tabs[7].items, tab_logs.protowaypoints)
 	append_header(7, 'Zones visited (%d/%d)', playertracker.zones_completed, playertracker.zones_total)
 	append_items(tabs[7].items, tab_logs.zones)
-	
 	-- Log Job Points Spent
 	check_exp()
-	
 	-- log Monstrosity levels & Race/Job Instincts
 	if (tab == 'monstrosity') then
 		tabs[8].items = {}
@@ -761,7 +748,6 @@ function xichecklist_updatetabs(tab)
 		append_header(8, 'Monster Instincts (%d/%d)', playertracker.monsterinsincts_completed, playertracker.monsterinsincts_total)
 		append_items(tabs[8].items, tab_logs.monsterinstincts)
 	end
-	
 	-- log Titles
 	append_header(9, 'Titles (%d/%d)', playertracker.Titles_completed, playertracker.Titles_total)
 	append_addonhelp(9, 'You must talk to \\cs(255,255,255)Aligi-Kufongi\\cr @ \\cs(50,150,255)Tavnazian Safehold (H-9)\\cr', playertracker.talk_to_npc['Aligi-Kufongi'])
@@ -781,14 +767,12 @@ function xichecklist_updatetabs(tab)
 	append_addonhelp(9, 'You must talk to \\cs(255,255,255)Quntsu-Nointsu\\cr @ \\cs(50,150,255)Norg (G-7)\\cr', playertracker.talk_to_npc['Quntsu-Nointsu'])
 	append_addonhelp(9, 'You must talk to \\cs(255,255,255)Debadle-Levadle\\cr @ \\cs(50,150,255)Western Adoulin (H-8)\\cr', playertracker.talk_to_npc['Debadle-Levadle'])
 	append_items(tabs[9].items, tab_logs.titles)
-	
 	-- log RoE
 	if (tab == 'roe') then
 		tabs[10].items = {}
 		append_header(10, 'RoE (%d/%d)', playertracker.roe_completed, playertracker.roe_total)
 		append_items(tabs[10].items, tab_logs.roe)
 	end
-	
 	if (tab == 'battlecontent') then
 		tabs[11].items = {}
 		-- log MMM
@@ -823,7 +807,7 @@ function xichecklist_updatetabs(tab)
 	end
 end
 
-function check_keyitems(category)
+check_keyitems = function(category)
 	local output_list = {}
 	local keyitem_exclusions = require('maps/keyitems_exclusions')
 	local excluded = keyitem_exclusions.excluded
@@ -848,7 +832,7 @@ function check_keyitems(category)
 	return output_list
 end
 
-function log_spells(spelltype)
+log_spells = function(spelltype)
 	local output_list = {}
 	local spells_exclusions = require('maps/spells_exclusions')
 	local playerspells = windower.ffxi.get_spells()
@@ -872,7 +856,7 @@ function log_spells(spelltype)
 	return output_list
 end
 
-function check_exp()
+check_exp = function()
 	local total_merit_upgrades = 0
 	local total_jp_spent = 0
 	local total_master_levels = 0
@@ -1107,14 +1091,14 @@ windower.register_event('addon command', function(...)
 end)
 
 -- Init & Cleanup
-function addon_clear()
+addon_clear = function()
 	playertracker = defaultplayertracker
 	tab_logs = defaulttab_logs
 	player = nil
 	ui:hide()
 end
 
-function addon_init()
+addon_init = function()
 	addon_clear() -- clear on re/load
 	player = windower.ffxi.get_player()
 	if not player then return end

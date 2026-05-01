@@ -34,7 +34,7 @@ _G.quest_logs = {
 	[0xFFFF] = {type='current', area='currentothermissions'},
 }
 
-function quest_util.log_quests(quest_type)
+quest_util.log_quests = function(quest_type)
     if not quests.completed[quest_type] then return false end
 	if (quest_type == 'campaign1' or quest_type == 'campaign2') then
 		quest_type = 'campaign'
@@ -76,7 +76,7 @@ function quest_util.log_quests(quest_type)
 	return output_list
 end
 
-function quest_util.log_missions(mission_type, current_mission_id)
+quest_util.log_missions = function(mission_type, current_mission_id)
 	if (not maps[mission_type]) then return false end
 	if current_mission_id > 999 then current_mission_id = 0 end
 	if current_mission_id < 0 then current_mission_id = current_mission_id + 2147483648 end

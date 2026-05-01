@@ -1,15 +1,15 @@
 local util = {}
 local bit = require('bit')
 
-function util.addon_log(str)
+util.addon_log = function(str)
     windower.add_to_chat(161, '[Checklist] ' .. str)
 end
 
-function util.has_bit(data, position)
+util.has_bit = function(data, position)
     return data:unpack('q', math.floor(position/8)+1, position%8+1)
 end
 
-function util.bytes_to_table(str)
+util.bytes_to_table = function(str)
     local t = {}
     for i = 1, #str do
         t[i - 1] = str:byte(i)
@@ -17,7 +17,7 @@ function util.bytes_to_table(str)
     return t
 end
 
-function util.twobits_to_table(data)
+util.twobits_to_table = function(data)
 -- Extract 2-bit values into a table
 	local result = {}
 	for i = 1, #data do
@@ -32,7 +32,7 @@ function util.twobits_to_table(data)
 	return result
 end
 
-function util.fourbits_to_table(data)
+util.fourbits_to_table = function(data)
     local result = {}
     for i = 1, #data do
         local byte = data:byte(i)
@@ -47,11 +47,11 @@ function util.fourbits_to_table(data)
     return result
 end
 
-function util.cleanspaces(str)
+util.cleanspaces = function(str)
     return str:gsub(" ", "_")
 end
 
-function util.list_item(category, text, completed, obtainmethod)
+util.list_item = function(category, text, completed, obtainmethod)
 	if (completed ~= true) then local completed = false end
 	if (text == nil) then return end
 	local item = {
@@ -63,7 +63,7 @@ function util.list_item(category, text, completed, obtainmethod)
 	return item
 end
 
-function util.totalpoints()
+util.totalpoints = function()
 	local completed, total = 0,0
 	for key, value in pairs(playertracker) do
 		if (key:sub(-10) == "_completed" and type(value) == "number") then
@@ -75,7 +75,7 @@ function util.totalpoints()
 	return completed, total
 end
 
-function util.table_to_clipboard(tbl)
+util.table_to_clipboard = function(tbl)
 	local result = ""
     for i = 1, #tbl do
 		local text = tostring(tbl[i])
@@ -86,7 +86,7 @@ function util.table_to_clipboard(tbl)
     return result
 end
 
-function util.log_tablog(tbl, striplastbracket)
+util.log_tablog = function(tbl, striplastbracket)
 	for key, item in pairs(tbl) do
 		local text = item.text
 		text = text:gsub("\\cs%(%d+,%d+,%d+%)", "")

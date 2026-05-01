@@ -73,7 +73,7 @@ ui = texts.new('', {
     padding = PADDING,
 })
 
-function append_items(dst, src)
+append_items = function(dst, src)
     if type(dst) ~= 'table' or type(src) ~= 'table' then
         return
     end
@@ -105,14 +105,14 @@ function append_items(dst, src)
     end
 end
 
-function append_maintab(text, ...)
+append_maintab = function(text, ...)
 	local args = {...}
 	local menulinecolor = '(255,255,0)'
 	if (args[1]==args[2]) then menulinecolor = '(0,255,0)' end
 	table.insert(tabs[1].items, '\\cs'..menulinecolor..'-'..text:format(...)..'\\cr')
 end
 
-function append_header(tab, text, ...)
+append_header = function(tab, text, ...)
 	args = {...}
 	local menulinecolor = '(255,255,255)'
 	if (args[1]==args[2]) then menulinecolor = '(0,255,0)' end
@@ -123,19 +123,19 @@ function append_header(tab, text, ...)
 	end
 end
 
-function append_addonhelp(tab, text, condition)
+append_addonhelp = function(tab, text, condition)
 	if not (condition and trackermenusettings.showcompleted) then
 		append_items(tabs[tab].items, {util.list_item('Addon Help', '\\cs(235,0,0)'..text..'\\cr', condition)})
 	end
 end
 
 -- UI HELPERS
-function inside(mx, my, x, y, width, h)
+inside = function(mx, my, x, y, width, h)
 	return mx >= x and mx <= x + width
 		and my >= y and my <= y + h
 end
 
-function clamp_scroll(count)
+clamp_scroll = function(count)
 	if selected < scroll + 1 then
 		scroll = selected - 1
 	elseif selected > scroll + VISIBLE_ROWS then
@@ -144,7 +144,7 @@ function clamp_scroll(count)
 	scroll = math.max(0, math.min(scroll, count - VISIBLE_ROWS))
 end
 
-function draw()
+draw = function()
 	local text = ''
 	-- Tabs
 	for i, tab in ipairs(tabs) do

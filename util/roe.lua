@@ -3,7 +3,7 @@ local roemap = require('../maps/roe_objectives')
 local roe_exclusions = require('../maps/roe_objectives_extra')
 local roe_data = ''
 
-function roe_util.log_roe(roe_data)
+roe_util.log_roe = function(roe_data)
 	local output_list = {}
 	local total, complete = 0,0
 	local hiddentotal, hiddencomplete = 0,0

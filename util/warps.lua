@@ -12,7 +12,7 @@ local warps_bytes = {
 	eschanportals = {0x40+1, 0x44+1},
 }
 
-function warps_util.log_warps(warptype)
+warps_util.log_warps = function(warptype)
 	if warps_util.warps_data == nil then return end
 	local subdata = warps_util.warps_data:sub(unpack(warps_bytes[warptype]))
 	local total, complete = 0, 0
@@ -32,7 +32,7 @@ function warps_util.log_warps(warptype)
 	return output_list
 end
 
-function warps_util.log_visitedzones(data)
+warps_util.log_visitedzones = function(data)
 	local subdata = data:sub(5, 52)
 	local total, complete = 0, 0
 	local zones_exclusion = S{0, 131} -- unknown and jail

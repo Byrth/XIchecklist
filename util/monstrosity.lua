@@ -9,7 +9,7 @@ local racejobinstincts = nil
 local variants_bitfield = nil
 local monsterinstincts = nil
 
-function mons_util.log_racejobinstincts()
+mons_util.log_racejobinstincts = function()
 	if mons_util.racejobinstincts==nil then return end
 	local output_list = {}
 	local total, obtained = 0, 0
@@ -27,7 +27,7 @@ function mons_util.log_racejobinstincts()
 	return output_list
 end
 
-function mons_util.log_monsterlevels()
+mons_util.log_monsterlevels = function()
 	if (mons_util.monster_levelspacket[1] == nil or mons_util.monster_levelspacket[2] == nil) then 
 		return
 	else 
@@ -48,7 +48,7 @@ function mons_util.log_monsterlevels()
 	return output_list
 end
 
-function mons_util.log_variants()
+mons_util.log_variants = function()
 	if mons_util.variants_bitfield==nil then return end
 	local output_list = {}
 	local total, obtained = 0, 0
@@ -66,7 +66,7 @@ function mons_util.log_variants()
 	return output_list
 end
 
-function mons_util.log_monsterinstincts()
+mons_util.log_monsterinstincts = function()
 	if mons_util.monsterinstincts==nil then return end
 	local output_list = {}
 	--local instincts_unlocks = util.twobits_to_table(mons_util.monsterinstincts)

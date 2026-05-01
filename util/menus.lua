@@ -12,7 +12,7 @@ menu_current = {
 	['Menu Parameters'] = nil,
 }
 
-function menus_util.handle_npc_menu(data)
+menus_util.handle_npc_menu = function(data)
 	local parseddata = packets.parse('incoming', data)
 	local index = parseddata['NPC Index']
 	local npc = index and windower.ffxi.get_mob_by_index(index).name
@@ -25,7 +25,7 @@ function menus_util.handle_npc_menu(data)
 	end
 end
 
-function menus_util.handle_npc_submenu(data)
+menus_util.handle_npc_submenu = function(data)
 	local parseddata = packets.parse('incoming', data)
 	local index = (menu_current.npcindex and menu_current.zoneid==windower.ffxi.get_info().zone) and menu_current.npcindex or parseddata['NPC Index']
 	if (index == nil) then return false end
@@ -38,7 +38,7 @@ function menus_util.handle_npc_submenu(data)
 	end
 end
 
-function menus_util.reset_current_menu()
+menus_util.reset_current_menu = function()
 	menu_current = {
 		npcindex = nil,
 		zoneid = nil,
@@ -49,7 +49,7 @@ function menus_util.reset_current_menu()
 	}
 end
 
-function menus_util.handle_menu_options(data)
+menus_util.handle_menu_options = function(data)
 	local parseddata = packets.parse('outgoing', data)
 	menu_current = {
 		npcindex = parseddata['Target Index'],
@@ -60,7 +60,7 @@ function menus_util.handle_menu_options(data)
 	}
 end
 
-function menus_util.handle_op_warps(parseddata)
+menus_util.handle_op_warps = function(parseddata)
 	local subdata = parseddata['Menu Parameters']:sub(0x1C+1, 0x1E+1)
 	for key, name in pairs(menumaps.outposts) do
 		if (not util.has_bit(subdata, key+5)) then -- +5 because mapping starts from 6th byte
@@ -71,7 +71,7 @@ function menus_util.handle_op_warps(parseddata)
 	playertracker:save()
 end
 
-function menus_util.add_outpost(id)
+menus_util.add_outpost = function(id)
 	if (not (playertracker.outposts_unlocks[tostring(id)] == true)) then
 		playertracker.outposts_unlocks[tostring(id)] = true
 		playertracker:save()
@@ -79,7 +79,7 @@ function menus_util.add_outpost(id)
 	end
 end
 
-function menus_util.log_outposts()
+menus_util.log_outposts = function()
 	local output_list = {}
 	local total, complete = 0,0
 	for key, name in pairs(menumaps.outposts) do
@@ -96,7 +96,7 @@ function menus_util.log_outposts()
 	return output_list
 end
 
-function menus_util.handle_chatnachoq(parseddata)
+menus_util.handle_chatnachoq = function(parseddata)
 	local menu = parseddata['Menu Parameters']
 	local mazes = menu:unpack('I', 13)
 	playertracker.mmm_mazecount = mazes
@@ -105,7 +105,7 @@ function menus_util.handle_chatnachoq(parseddata)
 	util.addon_log('Maze count: ' .. mazes)
 end
 
-function menus_util.handle_protowaypoint(parseddata)
+menus_util.handle_protowaypoint = function(parseddata)
 	local menu = parseddata['Menu Parameters']
 	for key, name in pairs(menumaps.protowaypoints) do
 		if (util.has_bit(menu, key)) then
@@ -116,7 +116,7 @@ function menus_util.handle_protowaypoint(parseddata)
 	playertracker:save()
 end
 
-function menus_util.add_protowaypoint(id)
+menus_util.add_protowaypoint = function(id)
 	if (not (playertracker.protowaypoints_unlocks[tostring(id)] == true)) then
 		playertracker.protowaypoints_unlocks[tostring(id)] = true
 		playertracker:save()
@@ -124,7 +124,7 @@ function menus_util.add_protowaypoint(id)
 	end
 end
 
-function menus_util.log_protowaypoints()
+menus_util.log_protowaypoints = function()
 	local output_list = {}
 	local total, complete = 0,0
 	for key, name in pairs(menumaps.protowaypoints) do
@@ -141,7 +141,7 @@ function menus_util.log_protowaypoints()
 	return output_list
 end
 
-function menus_util.handle_burrowsnpc(parseddata)
+menus_util.handle_burrowsnpc = function(parseddata)
 	local map_name = nil
 	if ((menu_current.zoneid == 244 and menu_current['_unknown1'] == 1) -- Upper Jeuno / Sauromugue Menu
 		or (menu_current['zoneid'] == 120 and menu_current['Option Index'] == 14)) then
@@ -158,7 +158,7 @@ function menus_util.handle_burrowsnpc(parseddata)
 	end
 end
 
-function menus_util.handle_sauromugueburrowsmenu(map_name, menu_parameters)
+menus_util.handle_sauromugueburrowsmenu = function(map_name, menu_parameters)
 	local burrowmap = menumaps.meeble_burrows[map_name]
 	for id, name in pairs(burrowmap) do
 		if util.has_bit(menu_parameters, id) then
@@ -167,7 +167,7 @@ function menus_util.handle_sauromugueburrowsmenu(map_name, menu_parameters)
 	end
 end
 
-function menus_util.handle_batalliaburrowsmenu(map_name, menu_parameters)
+menus_util.handle_batalliaburrowsmenu = function(map_name, menu_parameters)
 	local burrowmap = menumaps.meeble_burrows[map_name]
 	local batallia_unlocks = util.twobits_to_table(menu_parameters)
 	for id, name in pairs(burrowmap) do
@@ -177,7 +177,7 @@ function menus_util.handle_batalliaburrowsmenu(map_name, menu_parameters)
 	end
 end
 
-function menus_util.add_meeble_burrows(id,map_name)
+menus_util.add_meeble_burrows = function(id,map_name)
 	if (not (playertracker.meeble_completed[map_name][tostring(id)] == true)) then
 		playertracker.meeble_completed[map_name][tostring(id)] = true
 		playertracker:save()
@@ -185,7 +185,7 @@ function menus_util.add_meeble_burrows(id,map_name)
 	end
 end
 
-function menus_util.log_meeble_burrows()
+menus_util.log_meeble_burrows = function()
 	local output_list = {}
 	local total, complete = 0,0
 	for zone, burrows in pairs(menumaps.meeble_burrows) do
@@ -204,7 +204,7 @@ function menus_util.log_meeble_burrows()
 	return output_list
 end
 
-function menus_util.handle_katsunaga(parseddata)
+menus_util.handle_katsunaga = function(parseddata)
 	if menu_current['_unknown1'] == 0 then
 		for flag, id in ipairs(menumaps.fishes_menu) do
 			if (id ~= false) then
@@ -218,7 +218,7 @@ function menus_util.handle_katsunaga(parseddata)
 	end
 end
 
-function menus_util.add_fish_caught(id)
+menus_util.add_fish_caught = function(id)
 	if (not (playertracker.fishes_caught[tostring(id)] == true)) then
 		playertracker.fishes_caught[tostring(id)] = true
 		playertracker:save()
@@ -226,7 +226,7 @@ function menus_util.add_fish_caught(id)
 	end
 end
 
-function menus_util.log_fishes()
+menus_util.log_fishes = function()
 	local output_list = {}
 	local total, complete = 0,0
 	for key, id in pairs(menumaps.fishes_menu) do
@@ -244,7 +244,7 @@ function menus_util.log_fishes()
 	return output_list
 end
 
-function menus_util.handle_atmacitenpc(parseddata)
+menus_util.handle_atmacitenpc = function(parseddata)
 	local atmacite_levels = util.fourbits_to_table(parseddata['Menu Parameters'])
 	local playerkeyitems = windower.ffxi.get_key_items()
 	if (menu_current['_unknown1'] == 0 and menu_current['Option Index'] == 2) then
@@ -263,7 +263,7 @@ function menus_util.handle_atmacitenpc(parseddata)
 	end
 end
 
-function menus_util.log_atmacitelevels()
+menus_util.log_atmacitelevels = function()
 	local output_list = {}
 	local total, complete = 0,0
 	for key, atmacite in pairs(menumaps.atmacite) do
@@ -280,7 +280,7 @@ function menus_util.log_atmacitelevels()
 	return output_list
 end
 
-function menus_util.handle_chocobostablenpc(parseddata)
+menus_util.handle_chocobostablenpc = function(parseddata)
 	if (parseddata['Menu Parameters'] ~= nil) then
 		local winglevel = string.byte(parseddata['Menu Parameters'], 5)
 		if (winglevel > playertracker['wingskill_completed']) then
@@ -292,7 +292,7 @@ function menus_util.handle_chocobostablenpc(parseddata)
 	end
 end
 
-function menus_util.handle_titles_npc(parseddata, data)
+menus_util.handle_titles_npc = function(parseddata, data)
 	--local flags = parseddata['Menu Parameters']:sub(1, 24) -- commented until kayte PR 
 	local flags = data:sub(81, 104)
 	local index = parseddata['NPC Index']
@@ -309,7 +309,7 @@ function menus_util.handle_titles_npc(parseddata, data)
 	playertracker:save()
 end
 
-function menus_util.add_title(id)
+menus_util.add_title = function(id)
 	if (not (playertracker.titles[tostring(id)] == true)) then
 		playertracker.titles[tostring(id)] = true
 		util.addon_log('Title added: ' .. res.titles[id].en)
@@ -317,7 +317,7 @@ function menus_util.add_title(id)
 	playertracker:save()
 end
 
-function menus_util.log_titles()
+menus_util.log_titles = function()
 	local output_list = {}
 	local total, complete = 0,0
 	local exclusions = titlesexclusions
@@ -347,7 +347,7 @@ function menus_util.log_titles()
 	return output_list
 end
 
-function menus_util.list_titles_bycontent()
+menus_util.list_titles_bycontent = function()
 	local output_list = {}
 	for content, titles in pairs(titlescontnt) do
 		local total, complete = 0,0
@@ -366,7 +366,7 @@ function menus_util.list_titles_bycontent()
 	return output_list
 end
 
-function menus_util.handle_odyssey_questionmark(parseddata)
+menus_util.handle_odyssey_questionmark = function(parseddata)
 	if (menu_current['Option Index'] == 2 or menu_current['Option Index'] == 4 or menu_current['Option Index'] == 5 or menu_current['Option Index'] == 7) then 
 		-- SheolABC
 		local nostos = 0
@@ -399,7 +399,7 @@ function menus_util.handle_odyssey_questionmark(parseddata)
 	playertracker:save()
 end
 
-function menus_util.log_sheolgaol()
+menus_util.log_sheolgaol = function()
 	local output_list = {}
 	local total, complete = 0,0
 	for optionidx, optiontbl in pairs(menumaps.odyssey.gaol) do
@@ -415,7 +415,7 @@ function menus_util.log_sheolgaol()
 	return output_list
 end
 
-function menus_util.log_sheolabc(sheol)
+menus_util.log_sheolabc = function(sheol)
 	local output_list = {}
 	local total, complete = 0,0
 	local map_optionindex = 0
@@ -443,7 +443,7 @@ function menus_util.log_sheolabc(sheol)
 	return output_list
 end
 
-function menus_util.handle_vorseals_npc(parseddata)
+menus_util.handle_vorseals_npc = function(parseddata)
 	local nibble_table = util.fourbits_to_table(parseddata['Menu Parameters'])
 	if (parseddata['Menu ID'] == 9701) then -- initial interaction with NPC, no Option Index
 		for nibble, vorseal in pairs(menumaps.vorseals) do
@@ -459,7 +459,7 @@ function menus_util.handle_vorseals_npc(parseddata)
 	playertracker:save()
 end
 
-function menus_util.log_vorseals()
+menus_util.log_vorseals = function()
 	local output_list = {}
 	local total, complete = 0,0
 	for nibble, vorseal in pairs(menumaps.vorseals) do
