@@ -1,4 +1,4 @@
-texts = require('texts')
+texts = require('util/texts')
 -- UI CONSTANTS
 UI_SCALE		= tonumber(trackermenusettings.ui_scale) or 1
 FONT_SIZE		= function() return 12 * UI_SCALE end
