@@ -1,10 +1,10 @@
 texts = require('texts')
 -- UI CONSTANTS
 UI_SCALE		= tonumber(trackermenusettings.ui_scale) or 1
-FONT_SIZE		= 12 * UI_SCALE
-LINE_HEIGHT		= 16 * UI_SCALE
-PADDING			= 8 * UI_SCALE
-CHAR_WIDTH		= (FONT_SIZE/(2*UI_SCALE)) * UI_SCALE
+FONT_SIZE		= function() return 12 * UI_SCALE end
+LINE_HEIGHT		= function() return 16 * UI_SCALE end
+PADDING			= function() return 8 * UI_SCALE end
+CHAR_WIDTH		= function() return (FONT_SIZE()/(2*UI_SCALE)) * UI_SCALE end
 VISIBLE_ROWS	= 15
 -- UI WINDOW STATE
 active_tab		= 1
@@ -59,19 +59,68 @@ tabs = {
 }
 
 -- UI TEXT OBJECT
-ui = texts.new('', {
+ui = {}
+ui.menu = texts.new('', {
     pos = { x = trackermenusettings.pos.x, y = trackermenusettings.pos.y },
     text = {
         font = 'Arial',
-        size = FONT_SIZE,
+        size = FONT_SIZE(),
         red = 255, green = 255, blue = 255,
     },
     bg = {
         red = 25, green = 25, blue = 25,
         alpha = 200,
     },
-    padding = PADDING,
+    padding = PADDING(),
 })
+
+initiate_tabs = function()
+	for i, tab in ipairs(tabs) do
+		tabs[i].button = texts.new('', {
+			pos = { x = ui.menu:pos_x(), y = ui.menu:pos_y()},
+			text = {
+				font = 'Arial',
+				size = FONT_SIZE(),
+				red = 255, green = 255, blue = 255,
+			},
+			bg = {
+				red = 25, green = 25, blue = 25,
+				alpha = 200,
+			},
+			padding = PADDING(),
+			flags = {
+				draggable = false,
+			},
+		})
+		tabs[i].button:text(tab.name)
+		tabs[i].button:register_event('left_click', function()
+			active_tab = i
+			selected = 1
+			scroll = 0
+			draw()
+		end)
+	end
+end
+
+draw_tabs = function()
+	local total_xextent, total_yextent = 0, 0
+	for i, tab in ipairs(tabs) do
+		tabs[i].button:pos(ui.menu:pos_x()+total_xextent, ui.menu:pos_y())
+		tabs[i].button:visible(ui.menu:visible())
+		tabs[i].button:size(FONT_SIZE())
+		tabs[i].button:pad(PADDING())
+		if active_tab == i then
+			tabs[i].button:bg_color(70, 130, 200)
+			tabs[i].button:bg_alpha(220)
+		else
+			tabs[i].button:bg_color(25, 25, 25)
+			tabs[i].button:bg_alpha(200)
+		end
+		local xextent, yextent = tabs[i].button:extents()
+		total_xextent = total_xextent + xextent
+	end
+	ui.width = total_xextent
+end
 
 append_items = function(dst, src)
     if type(dst) ~= 'table' or type(src) ~= 'table' then
@@ -146,11 +195,8 @@ end
 
 draw = function()
 	local text = ''
-	-- Tabs
-	for i, tab in ipairs(tabs) do
-		text = text .. (i == active_tab and '['..tab.name..'] ' or ' '..tab.name..'  ')
-	end
-	text = text .. '\n────────────\n'
+	--text = text .. '\n'.. '─':rep((PADDING()/CHAR_WIDTH())+(ui.width/CHAR_WIDTH())) .. '\n'
+	text = text .. '\n───────────────────────────────────────────────────────────────────\n'
 	-- List
 	local items = tabs[active_tab].items
 	local count = #items
@@ -166,14 +212,20 @@ draw = function()
 			text = text .. (idx == selected and '\\cs(255,0,0)> ' or '  ') .. items[idx] .. '\\cr\n'
 		end
 	end
-	ui:text(text)
-	ui:pos(trackermenusettings.pos.x, trackermenusettings.pos.y)
+	ui.menu:text(text)
+	ui.menu:pos(trackermenusettings.pos.x, trackermenusettings.pos.y)
 end
 
+initiate_tabs()
+
 -------------------------------------------------
+windower.register_event('prerender', function()
+	draw_tabs()
+end)
+
 windower.register_event('mouse', function(type, x, y, delta, blocked)
-	if (ui:visible() == false) then return end
-    local px, py = ui:pos()
+	if (ui.menu:visible() == false) then return end
+    local px, py = ui.menu:pos()
     local items = tabs[active_tab].items
     local count = #items
 	-- save new UI pos if changed
@@ -182,50 +234,14 @@ windower.register_event('mouse', function(type, x, y, delta, blocked)
 		trackermenusettings.pos.y = py
 		trackermenusettings:save()
 	end
-    -- Tab Click
-	if type == 1 then
-		local tab_x = px + PADDING
-		local tab_y = py + PADDING
-		for i, tab in ipairs(tabs) do
-			local label = (i == active_tab and '['..tab.name..'] ' or ' '..tab.name..'  ')
-			local width = (#label * CHAR_WIDTH) + (i*2 * UI_SCALE)
-			if inside(x, y, tab_x, tab_y, width, LINE_HEIGHT) then
-				active_tab = i
-				selected = 1
-				scroll = 0
-				draw()
-				return true
-			end
-			tab_x = tab_x + width
-		end
-	end
-    -- LIST CLICK
-    --[[
-	if type == 1 then
-        local list_y = py + PADDING + LINE_HEIGHT * 2
-
-        for i = 1, VISIBLE_ROWS do
-            local idx = i + scroll
-            local row_y = list_y + (i - 1) * LINE_HEIGHT
-
-            if inside(x, y, px, row_y, win_width, LINE_HEIGHT) then
-                if items[idx] then
-                    selected = idx
-                    clamp_scroll(count)
-                    draw()
-                    return true
-                end
-            end
-        end
-    end]]
 	-- mouse scroll up down
 	if delta and delta ~= 0 then
-		if ui:hover(x, y) then
+		if ui.menu:hover(x, y) then
 			if delta > 0 then
 				selected = math.max(1, selected - 1)
 				clamp_scroll(count)
 			else
-				selected = math.min(count, selected + 1)
+				selected = math.min(count, selected - delta)
 				clamp_scroll(count)
 			end
 			draw()

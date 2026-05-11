@@ -23,6 +23,20 @@ roe_util.log_roe = function(roe_data)
 			table.insert(output_list, util.list_item(nil, roemap[key].name, completion))
 		end
 	end
+	-- do only crafting shields
+	for name, roelist in pairs(roe_exclusions.shields) do
+		total = total+1
+		local tiercomplete = 0
+		local completion = false
+		for key in pairs(roelist) do
+			if util.has_bit(roe_data, key) then
+				tiercomplete = 1
+				completion = true
+			end
+		end
+		complete = complete + tiercomplete
+		table.insert(output_list, util.list_item(nil, name, completion))
+	end
 	playertracker.roe_completed = complete - hiddencomplete
 	playertracker.roe_total = total - hiddentotal
 	return output_list

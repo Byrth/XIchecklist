@@ -1,12 +1,14 @@
 return {
 	excluded = S{
 		2985, -- Plaudits! (VB)
+		2986, -- Rhapsodies of Vana'diel 1 (VB)
 		2987, -- Thanks and Come Again! (VB)
+		2988, -- Here We Go Again (VB)
 		2991, -- Release a Pixie (VB)
-		2992, -- The Pioneering Spirit (VB)
+		2992, -- Mog Garden: Arboreal Grove (VB)
 		2993, -- Incursion (VB)
 		2994, -- Cold and Dark (VB)
-		2995, -- Egg-xactly (VB)
+		2995, -- The Swarm (VB)
 		2996, -- Rune 'Em Up! (VB)
 		2997, -- Mog Garden: Furrow (VB)
 
@@ -71,8 +73,10 @@ return {
 		3058, -- Van. Enemies w. Unity Leader D (UC)
 		3059, -- Van. Enemies w. Unity Leader E (UC)
 		3060, -- Van. Enemies w. Unity Leader F (UC)
-
-
+		
+		3063, -- Tiger's Teeth (VBD)
+		3064, -- Domain Invasion (VBD)
+		3065, -- High Five (VBD)
 		3072, -- Chocobo Digging (VBD)
 		3073, -- Gourmet (VBD)
 		3074, -- More Pioneering Spirit (VBD)
@@ -488,5 +492,11 @@ return {
 		4079, -- Fishing: Lu Shang's Fishing Rod
 		
 		4086, -- Unlocking Scenarios X
-	}
+	},
+	shields = {
+		["Guild Master's Request 1"] = {2168, 2172, 2176, 2180, 2184, 2188, 2192, 2196},
+		["Guild Master's Request 2"] = {2169, 2173, 2177, 2181, 2185, 2189, 2193, 2197},
+		["Guild Master's Request 3"] = {2170, 2174, 2178, 2182, 2186, 2190, 2194, 2198},
+		["Guild Master's Request 4"] = {2171, 2175, 2179, 2183, 2187, 2191, 2195, 2199},
+	},
 }

@@ -61,7 +61,6 @@ return S{
 	--Currently bugged and do not save properly
 	435, --Disturber of Slumber
 	436, --Interrupter of Dreams
-	737, --Champion of the Dawn
 	826, --Fulmination Disruptor
 
 	--Effectively exclusive with one another

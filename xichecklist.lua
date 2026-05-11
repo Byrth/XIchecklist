@@ -1,6 +1,6 @@
 _addon.name     = 'xichecklist'
 _addon.author   = 'HiPotion'
-_addon.version  = '0.17.9'
+_addon.version  = '0.17.10'
 _addon.commands = {'xichecklist', 'xic', 'checklist', 'clist'}
 
 require('sets')
@@ -313,9 +313,9 @@ update_maintab = function()
 	
 	tabs[1].items = {}
 	
+	append_maintab('Mastery Rank: %d', playertracker.mastery_rank)
 	append_maintab('Checklist Progress %d/%d', util.totalpoints())
 	table.insert(tabs[1].items, '======= General =======')
-	append_maintab('Mastery Rank: %d', playertracker.mastery_rank)
 	append_maintab('RoE %d/%d', playertracker.roe_completed, playertracker.roe_total)
 	append_maintab('Zones visited %d/%d', playertracker.zones_completed, playertracker.zones_total)
 	append_maintab('Titles %d/%d', playertracker.Titles_completed, playertracker.Titles_total)
@@ -328,26 +328,26 @@ update_maintab = function()
 	append_maintab('San d\'Oria Missions %d/%d', playertracker.sandoriamissions_completed, playertracker.sandoriamissions_total)
 	append_maintab('Bastok Missions %d/%d', playertracker.bastokmissions_completed, playertracker.bastokmissions_total)
 	append_maintab('Windurst Missions %d/%d', playertracker.windurstmissions_completed, playertracker.windurstmissions_total)
-	append_maintab('Zilart Missions %d/%d', playertracker.zilartmissions_completed, playertracker.zilartmissions_total)
+	append_maintab('RotZ Missions %d/%d', playertracker.zilartmissions_completed, playertracker.zilartmissions_total)
 	append_maintab('CoP Missions %d/%d', playertracker.copmissions_completed, playertracker.copmissions_total)
-	append_maintab('TOAU Missions %d/%d', playertracker.ahturhganmissions_completed, playertracker.ahturhganmissions_total)
 	append_maintab('Assaults %d/%d', playertracker.assaults_completed, playertracker.assaults_total)
-	append_maintab('WOTG Missions %d/%d', playertracker.wotgmissions_completed, playertracker.wotgmissions_total)
+	append_maintab('ToAU Missions %d/%d', playertracker.ahturhganmissions_completed, playertracker.ahturhganmissions_total)
+	append_maintab('Campaign Ops %d/%d', playertracker.campaign_completed, playertracker.campaign_total)
+	append_maintab('WoTG Missions %d/%d', playertracker.wotgmissions_completed, playertracker.wotgmissions_total)
 	append_maintab('ACP Missions %d/%d', playertracker.acpmissions_completed, playertracker.acpmissions_total)
 	append_maintab('MKD Missions %d/%d', playertracker.mkdmissions_completed, playertracker.mkdmissions_total)
 	append_maintab('ASA Missions %d/%d', playertracker.asamissions_completed, playertracker.asamissions_total)
 	append_maintab('SoA Missions %d/%d', playertracker.soamissions_completed, playertracker.soamissions_total)
 	append_maintab('RoV Missions %d/%d', playertracker.rovmissions_completed, playertracker.rovmissions_total)
 	append_maintab('TVR Missions %d/%d', playertracker.tvrmissions_completed, playertracker.tvrmissions_total)
-	append_maintab('Campaign Ops %d/%d', playertracker.campaign_completed, playertracker.campaign_total)
-	append_maintab('Bastok Quests %d/%d', playertracker.bastok_completed, playertracker.bastok_total)
 	append_maintab('San d\'Oria Quests %d/%d', playertracker.sandoria_completed, playertracker.sandoria_total)
+	append_maintab('Bastok Quests %d/%d', playertracker.bastok_completed, playertracker.bastok_total)
 	append_maintab('Windurst Quests %d/%d', playertracker.windurst_completed, playertracker.windurst_total)
 	append_maintab('Jeuno Quests %d/%d', playertracker.jeuno_completed, playertracker.jeuno_total)
+	append_maintab('Other Quests %d/%d', playertracker.other_completed, playertracker.other_total)
+	append_maintab('Outlands Quests %d/%d', playertracker.outlands_completed, playertracker.outlands_total)
 	append_maintab('Aht Urhgan Quests %d/%d', playertracker.ahturhgan_completed, playertracker.ahturhgan_total)
 	append_maintab('Crystal War Quests %d/%d', playertracker.crystalwar_completed, playertracker.crystalwar_total)
-	append_maintab('Outlands Quests %d/%d', playertracker.outlands_completed, playertracker.outlands_total)
-	append_maintab('Other Quests %d/%d', playertracker.other_completed, playertracker.other_total)
 	append_maintab('Abyssea Quests %d/%d', playertracker.abyssea_completed, playertracker.abyssea_total)
 	append_maintab('Adoulin Quests %d/%d', playertracker.adoulin_completed, playertracker.adoulin_total)
 	append_maintab('Coalition Assignments %d/%d', playertracker.coalition_completed, playertracker.coalition_total)
@@ -625,15 +625,15 @@ xichecklist_updatetabs = function(tab)
 		append_items(tabs[2].items, tab_logs.quests.bastokmissions)
 		append_header(2, 'Windurst Missions (%d/%d)', playertracker.windurstmissions_completed, playertracker.windurstmissions_total)
 		append_items(tabs[2].items, tab_logs.quests.windurstmissions)
-		append_header(2, 'Zilart Missions (%d/%d)', playertracker.zilartmissions_completed, playertracker.zilartmissions_total)
+		append_header(2, 'RotZ Missions (%d/%d)', playertracker.zilartmissions_completed, playertracker.zilartmissions_total)
 		append_items(tabs[2].items, tab_logs.quests.zilartmissions)
 		append_header(2, 'CoP Missions (%d/%d)', playertracker.copmissions_completed, playertracker.copmissions_total)
 		append_items(tabs[2].items, tab_logs.quests.copmissions)
-		append_header(2, 'TOAU Missions (%d/%d)', playertracker.ahturhganmissions_completed, playertracker.ahturhganmissions_total)
-		append_items(tabs[2].items, tab_logs.quests.ahturhganmissions)
 		append_header(2, 'Assaults (%d/%d)', playertracker.assaults_completed, playertracker.assaults_total)
 		append_items(tabs[2].items, tab_logs.quests.assaults)
-		append_header(2, 'WOTG Missions (%d/%d)', playertracker.wotgmissions_completed, playertracker.wotgmissions_total)
+		append_header(2, 'ToAU Missions (%d/%d)', playertracker.ahturhganmissions_completed, playertracker.ahturhganmissions_total)
+		append_items(tabs[2].items, tab_logs.quests.ahturhganmissions)
+		append_header(2, 'WoTG Missions (%d/%d)', playertracker.wotgmissions_completed, playertracker.wotgmissions_total)
 		append_items(tabs[2].items, tab_logs.quests.wotgmissions)
 		append_header(2, 'ACP Missions (%d/%d)', playertracker.acpmissions_completed, playertracker.acpmissions_total)
 		append_items(tabs[2].items, tab_logs.quests.acpmissions)
@@ -655,14 +655,14 @@ xichecklist_updatetabs = function(tab)
 		append_items(tabs[2].items, tab_logs.quests.windurst)
 		append_header(2, 'Jeuno Quests (%d/%d)', playertracker.jeuno_completed, playertracker.jeuno_total)
 		append_items(tabs[2].items, tab_logs.quests.jeuno)
+		append_header(2, 'Other Quests (%d/%d)', playertracker.other_completed, playertracker.other_total)
+		append_items(tabs[2].items, tab_logs.quests.other)
+		append_header(2, 'Outlands Quests (%d/%d)', playertracker.outlands_completed, playertracker.outlands_total)
+		append_items(tabs[2].items, tab_logs.quests.outlands)
 		append_header(2, 'Aht Urhgan Quests (%d/%d)', playertracker.ahturhgan_completed, playertracker.ahturhgan_total)
 		append_items(tabs[2].items, tab_logs.quests.ahturhgan)
 		append_header(2, 'Crystal War Quests (%d/%d)', playertracker.crystalwar_completed, playertracker.crystalwar_total)
 		append_items(tabs[2].items, tab_logs.quests.crystalwar)
-		append_header(2, 'Outlands Quests (%d/%d)', playertracker.outlands_completed, playertracker.outlands_total)
-		append_items(tabs[2].items, tab_logs.quests.outlands)
-		append_header(2, 'Other Quests (%d/%d)', playertracker.other_completed, playertracker.other_total)
-		append_items(tabs[2].items, tab_logs.quests.other)
 		append_header(2, 'Abyssea Quests (%d/%d)', playertracker.abyssea_completed, playertracker.abyssea_total)
 		append_items(tabs[2].items, tab_logs.quests.abyssea)
 		append_header(2, 'Adoulin Quests (%d/%d)', playertracker.adoulin_completed, playertracker.adoulin_total)
@@ -919,11 +919,11 @@ windower.register_event('addon command', function(...)
 		trackermenusettings.visibility = true
 		trackermenusettings:save()
 		draw()
-		ui:show()
+		ui.menu:show()
 	elseif cmds.hide:contains(arg[1]) then
 		trackermenusettings.visibility = false
 		trackermenusettings:save()
-		ui:hide()
+		ui.menu:hide()
 	elseif cmds.showcompleted:contains(arg[1]) then
 		trackermenusettings.showcompleted = not trackermenusettings.showcompleted
 		util.addon_log('showcompleted: '..tostring(trackermenusettings.showcompleted))
@@ -940,15 +940,10 @@ windower.register_event('addon command', function(...)
 		windower.copy_to_clipboard(util.table_to_clipboard(tabs[active_tab].items))
 		windower.add_to_chat(100, 'Copy to clipboard')
 	elseif cmds.scale:contains(arg[1]) then
-		NEW_UISCALE 	= tonumber(arg[2]) or 1
-		FONT_SIZE		= (FONT_SIZE/UI_SCALE) * NEW_UISCALE
-		LINE_HEIGHT		= (LINE_HEIGHT/UI_SCALE) * NEW_UISCALE
-		PADDING			= (PADDING/UI_SCALE) * NEW_UISCALE
-		CHAR_WIDTH		= (FONT_SIZE/(2*NEW_UISCALE)) * NEW_UISCALE
-		UI_SCALE = NEW_UISCALE
-		ui:size(FONT_SIZE)
-		ui:pad(PADDING)
-		trackermenusettings.ui_scale = NEW_UISCALE
+		UI_SCALE 	= tonumber(arg[2]) or 1
+		ui.menu:size(FONT_SIZE())
+		ui.menu:pad(PADDING())
+		trackermenusettings.ui_scale = UI_SCALE
 		trackermenusettings:save()
 		util.addon_log('UI Scale: '..trackermenusettings.ui_scale)
 	elseif cmds.log:contains(arg[1]) then
@@ -1095,7 +1090,7 @@ addon_clear = function()
 	playertracker = defaultplayertracker
 	tab_logs = defaulttab_logs
 	player = nil
-	ui:hide()
+	ui.menu:hide()
 end
 
 addon_init = function()
@@ -1105,12 +1100,12 @@ addon_init = function()
 	playertracker = config.load('data/'.. windower.ffxi.get_player().name .. '.xml', playertracker)
 	xichecklist_updatemenulogs()
 	if (trackermenusettings.visibility and player) then
-		ui:show()
+		ui.menu:show()
 	end
 end
 
 windower.register_event('load', 'login', 'logout', addon_init)
 windower.register_event('logout', addon_clear)
 windower.register_event('unload', function()
-	ui:destroy()
+	ui.menu:destroy()
 end)
