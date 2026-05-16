@@ -74,7 +74,6 @@ end
 menus_util.add_outpost = function(id)
 	if (not (playertracker.outposts_unlocks[tostring(id)] == true)) then
 		playertracker.outposts_unlocks[tostring(id)] = true
-		playertracker:save()
 		util.addon_log('Outpost added: ' .. menumaps.outposts[id])
 	end
 end
@@ -119,7 +118,6 @@ end
 menus_util.add_protowaypoint = function(id)
 	if (not (playertracker.protowaypoints_unlocks[tostring(id)] == true)) then
 		playertracker.protowaypoints_unlocks[tostring(id)] = true
-		playertracker:save()
 		util.addon_log('Proto-Waypoint added: ' .. menumaps.protowaypoints[id])
 	end
 end
@@ -221,7 +219,6 @@ end
 menus_util.add_fish_caught = function(id)
 	if (not (playertracker.fishes_caught[tostring(id)] == true)) then
 		playertracker.fishes_caught[tostring(id)] = true
-		playertracker:save()
 		util.addon_log('Fish added: ' .. res.items[id].en)
 	end
 end
@@ -301,7 +298,7 @@ menus_util.handle_titles_npc = function(parseddata, data)
 		local category = flags:unpack('I', 1 + (cat - 1) * 4)
 		for flag, id in ipairs(ids) do
 			if bit.band(category, bit.lshift(1, flag)) == 0 then
-				menus_util.add_title(id)
+				menus_util.add_title(id, true)
 			end
 		end
 	end
@@ -309,12 +306,14 @@ menus_util.handle_titles_npc = function(parseddata, data)
 	playertracker:save()
 end
 
-menus_util.add_title = function(id)
+menus_util.add_title = function(id, defer_save)
 	if (not (playertracker.titles[tostring(id)] == true)) then
 		playertracker.titles[tostring(id)] = true
 		util.addon_log('Title added: ' .. res.titles[id].en)
 	end
-	playertracker:save()
+	if not defer_save then
+		playertracker:save()
+	end
 end
 
 menus_util.log_titles = function()
@@ -367,6 +366,7 @@ menus_util.list_titles_bycontent = function()
 end
 
 menus_util.handle_odyssey_questionmark = function(parseddata)
+	local need_save = false
 	if (menu_current['Option Index'] == 2 or menu_current['Option Index'] == 4 or menu_current['Option Index'] == 5 or menu_current['Option Index'] == 7) then 
 		-- SheolABC
 		local nostos = 0
@@ -374,14 +374,17 @@ menus_util.handle_odyssey_questionmark = function(parseddata)
 			byteidx = tonumber(byteidx)
 			if (byteidx) then -- if its a number, aka not nostos or talk_to_npc
 				playertracker.sheolabc[tostring(menu_current['Option Index'])][tostring(byteidx)] = string.byte(parseddata['Menu Parameters'], byteidx)
+				need_save = true
 			end
 		end
 		if menumaps.odyssey.sheolabc[menu_current['Option Index']].nostos then
 			nostos = parseddata['Menu Parameters']:unpack('I2', menumaps.odyssey.sheolabc[menu_current['Option Index']].nostos.data)
 			playertracker.sheolabc[tostring(menu_current['Option Index'])].nostos = nostos
+			need_save = true
 		end
 		if menumaps.odyssey.sheolabc[menu_current['Option Index']].talk_to_npc then
 			playertracker.talk_to_npc[menumaps.odyssey.sheolabc[menu_current['Option Index']].talk_to_npc] = true
+			need_save = true
 		end
 	elseif (menu_current['Option Index'] == 8 or menu_current['Option Index'] == 9 or menu_current['Option Index'] == 10) then -- Choose Sheo Gaol status report
 		-- Sheol Gaol
@@ -395,8 +398,11 @@ menus_util.handle_odyssey_questionmark = function(parseddata)
 			playertracker.sheolgaol[tostring(menu_current['Option Index'])][tostring(byteidx)] = venglevel
 		end
 		playertracker.talk_to_npc.sheolgaol = true
+		need_save = true
 	end
-	playertracker:save()
+	if need_save then
+		playertracker:save()
+	end
 end
 
 menus_util.log_sheolgaol = function()
