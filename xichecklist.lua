@@ -547,12 +547,16 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 	end
 	-- do RoE
 	if id == 0x112 then
-		if (not roe_data) then roe_data = '' end
+		if (not ROE_DATA) then ROE_DATA = {} end
 		local parseddata = packets.parse('incoming', data)
-		roe_data = roe_data .. parseddata['RoE Quest Bitfield'] -- the packet will be repeated three times, gather the data first
-		if (parseddata.Order == 3) then
+		-- the packet will be repeated four times, gather the data first
+		ROE_DATA[parseddata.Order + 1] = parseddata['RoE Quest Bitfield']
+		if #ROE_DATA == 4 then
+			local roe_data = ''
+			for _, roe_datum in ipairs(ROE_DATA) do
+				roe_data = roe_data .. roe_datum
+			end
 			tab_logs.roe = roe_util.log_roe(roe_data)
-			roe_data = nil -- reset
 			xichecklist_updatetabs('roe')
 		end
 	end
