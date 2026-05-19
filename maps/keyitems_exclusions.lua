@@ -241,6 +241,226 @@ return {
 		2065, -- Kupofried's corundum
 		2066, -- Kupofried's corundum
 		2067, -- Kupofried's corundum
+		
+		-- Abyssea
+		1271, -- traverser stone
+		1272, -- traverser stone
+		1273, -- traverser stone
+		1274, -- traverser stone
+		1275, -- traverser stone
+		1276, -- traverser stone
+
+		1459, -- fragrant treant petal
+		1460, -- fetid rafflesia stalk
+		1461, -- decaying morbol tooth
+		1462, -- turbid slime oil
+		1463, -- venomous peiste claw
+		1464, -- tattered hippogryph wing
+		1465, -- cracked wivre horn
+		1466, -- mucid Ahriman eyeball
+		1467, -- twisted Tonberry crown
+		1468, -- veinous hecteyes eyelid
+		1469, -- torn bat wing
+		1470, -- gory scorpion claw
+		1471, -- mossy adamantoise shell
+		1472, -- fat-lined cockatrice skin
+		1473, -- sodden sandworm husk
+		1474, -- luxuriant manticore mane
+		1475, -- sticky gnat wing
+		1476, -- overgrown mandragora flower
+		1477, -- chipped sandworm tooth
+		1478, -- marbled mutton chop
+		1479, -- bloodied saber tooth
+		1480, -- blood-smeared Gigas helm
+		1481, -- glittering pixie choker
+		1482, -- dented Gigas shield
+		1483, -- warped Gigas armband
+		1484, -- severed Gigas collar
+		1485, -- pellucid fly eye
+		1486, -- shimmering pixie pinion
+		1487, -- smoldering crab shell
+		1488, -- venomous wamoura feeler
+		1489, -- bulbous crawler cocoon
+		1490, -- distended chigoe abdomen
+		1491, -- mucid worm segment
+		1492, -- shriveled hecteyes stalk
+		1493, -- blotched doomed tongue
+		1494, -- cracked skeleton clavicle
+		1495, -- writhing ghost finger
+		1496, -- rusted hound collar
+		1497, -- hollow dragon eye
+		1498, -- bloodstained bugard fang
+		1499, -- gnarled lizard nail
+		1500, -- molted peiste skin
+		1501, -- jagged apkallu beak
+		1502, -- clipped bird wing
+		1503, -- bloodied bat fur
+		1504, -- glistening orobon liver
+		1505, -- doffed Poroggo hat
+		1506, -- scalding ironclad spike
+		1507, -- blazing cluster soul
+		1508, -- ingrown taurus nail
+		1509, -- ossified gargouille hand
+		1510, -- imbrued vampyr fang
+		1511, -- glossy sea monk sucker
+		1512, -- shimmering pugil scale
+		1513, -- decayed dvergr tooth
+		1514, -- pulsating soulflayer beard
+		1515, -- chipped imp's olifant
+		1516, -- warped smilodon choker
+		1517, -- malodorous marid fur
+		1518, -- broken iron giant spike
+		1519, -- rusted chariot gear
+		1520, -- steaming cerberus tongue
+		1521, -- bloodied dragon ear
+		1522, -- resplendent roc quill
+		1523, -- warped iron giant nail
+		1524, -- dented chariot shield
+		1525, -- torn khimaira wing
+		1526, -- begrimed dragon hide
+		1527, -- decaying diremite fang
+		1528, -- shattered iron giant chain
+		1529, -- warped chariot plate
+		1530, -- venomous hydra fang
+		1531, -- vacant bugard eye
+		1532, -- variegated uragnite shell
+		1533, -- battle trophy: 1st echelon
+		1534, -- battle trophy: 2nd echelon
+		1535, -- battle trophy: 3rd echelon
+		1536, -- battle trophy: 4th echelon
+		1537, -- battle trophy: 5th echelon
+		1538, -- crimson traverser stone
+
+		1559, -- vat of martello fuel
+		1560, -- fuel reservoir
+		1561, -- empty fuel vat
+		1562, -- cracked fuel reservoir
+		1563, -- vial of lambent potion
+		1564, -- clear demilune abyssite
+		1565, -- colorful demilune abyssite
+		1566, -- scarlet demilune abyssite
+		1567, -- azure demilune abyssite
+		1568, -- viridian demilune abyssite
+		1569, -- anti-Abyssean grenade #01
+		1570, -- anti-Abyssean grenade #02
+		1571, -- anti-Abyssean grenade #03
+		1572, -- rainbow pearl
+		1573, -- chipped wind cluster
+		1574, -- piece of dried ebony lumber
+		1575, -- Captain Rashid's linkpearl
+		1576, -- Captain Argus's linkpearl
+		1577, -- Captain Helga's linkpearl
+		1578, -- seal of the resistance
+		1579, -- sunbeam fragment
+		1580, -- Lugarhoo's eyeball
+		1581, -- vial of purification agent (blk.)
+		1582, -- vial of purification agent (brz.)
+		1583, -- vial of purification agent (slv.)
+		1584, -- vial of purification agent (gld.)
+		1585, -- black-labeled vial
+		1586, -- bronze-labeled vial
+		1587, -- silver-labeled vial
+		1588, -- gold-labeled vial
+		1589, -- rainbow-colored linkpearl
+		1590, -- grey abyssite
+		1591, -- ripe starfruit
+		1592, -- vial of flower-wower fertilizer
+		1593, -- Tahrongi tree nut
+		1594, -- bucket of compound compost
+		1595, -- cup of Tahrongi cactus water
+		1596, -- hastily scrawled poster
+		1597, -- bloodied arrow
+		1598, -- crimson bloodstone
+
+		1600, -- pinch of moist Dangruf sulfur
+		1601, -- Naji's gauger plate
+		1602, -- Naji's linkpearl
+
+		1609, -- torn recipe page
+		1610, -- mineral gauge for dummies
+		1611, -- tube of alchemical fertilizer
+		1612, -- large memory fragment
+		1613, -- large memory fragment
+		1614, -- pulse martello repair pack
+		1615, -- clone ward reinforcement pack
+		1616, -- pack of outpost repair tools
+		1617, -- Parradamo supply pack
+		1618, -- Parradamo supply pack
+		1619, -- Parradamo supply pack
+		1620, -- Parradamo supply pack
+		1621, -- Parradamo supply pack
+		1622, -- gasponia stamen
+		1623, -- rockhopper
+		1624, -- phial of counteragent
+		1625, -- damaged stewpot
+		1626, -- Naruru's stewpot
+		1627, -- magicked hempen sack
+		1628, -- magicked flaxen sack
+		1629, -- paralysis trap fluid
+		1630, -- paralysis trap fluid bottle
+		1631, -- weakening trap fluid
+		1632, -- weakening trap fluid bottle
+		1633, -- Iron Eater's pearlsack
+		1635, -- medical supply chest
+		1636, -- woodworker's belt
+		1637, -- espionage pearlsack
+		1638, -- chipped linkshell
+		1639, -- grimy linkshell
+		1640, -- cracked linkshell
+		1641, -- pocket supply pack
+		1642, -- standard supply pack
+		1643, -- hefty supply pack
+		1644, -- pack of molten slag
+		1645, -- letter of receipt
+		1646, -- smudged letter
+		1647, -- yellow linkpearl
+		1648, -- jester's hat
+		1649, -- jade demilune abyssite
+		1650, -- sapphire demilune abyssite
+		1651, -- crimson demilune abyssite
+		1652, -- emerald demilune abyssite
+		1653, -- vermillion demilune abyssite
+		1654, -- indigo demilune abyssite
+
+		1702, -- EX-01 martello core
+		1703, -- EX-02 martello core
+		1704, -- EX-03 martello core
+		1705, -- EX-04 martello core
+		1706, -- EX-05 martello core
+		1707, -- EX-06 martello core
+		1708, -- EX-07 martello core
+
+		1711, -- silver pocket watch
+		1712, -- elegant gemstone
+		1713, -- wivre egg
+		1714, -- wivre egg
+		1715, -- wivre egg
+		1716, -- torch coal
+		1717, -- subniveal mines
+		1718, -- piece of sodden oak lumber
+		1719, -- sodden linen cloth
+		1720, -- dhorme khimaira's mane
+		1721, -- Imperial pearl
+
+		1733, -- pinch of pixie dust
+		1734, -- wedding invitation
+		1735, -- snoll reflector
+		1736, -- frosted snoll reflector
+		1737, -- experiment cheat sheet
+
+		1758, -- frostbloom
+		1759, -- frostbloom
+		1760, -- frostbloom
+		1761, -- moon pendant
+		1762, -- wyvern egg
+		1763, -- wyvern egg shell
+		1764, -- Waugyl's claw
+		1765, -- bottle of military ink
+		1766, -- military ink package
+		
+		-- Mog Gardens
+		2390, -- kaleidoscopic clam
+		2391, -- glass pendulum
 	},
 	hidden = S{
 		-- old events no longer playable

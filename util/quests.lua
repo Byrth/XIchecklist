@@ -67,13 +67,19 @@ quest_util.log_quests = function(quest_type)
 				end
             end
 			if (not mutualcompleted) then
-				table.insert(output_list, util.list_item(quest_type, maps[quest_type][id], completion))
+				table.insert(output_list, util.list_item(nil, maps[quest_type][id], completion))
 			end
         end
 	end
 	playertracker[quest_type..'_completed'] = complete
 	playertracker[quest_type..'_total'] = total
-	return output_list
+	tab_logs[quest_type] = {
+		name = tab_logs[quest_type].name,
+		completed = complete,
+		total = total,
+		items = output_list
+	}
+	--return {name = tab_logs.quests[quest_type].name, completed = complete, total = total, items = output_list}
 end
 
 quest_util.log_missions = function(mission_type, current_mission_id)
@@ -94,7 +100,13 @@ quest_util.log_missions = function(mission_type, current_mission_id)
 	end
 	playertracker[mission_type..'_completed'] = complete
 	playertracker[mission_type..'_total'] = total
-	return output_list
+	tab_logs[mission_type] = {
+		name = tab_logs[mission_type].name,
+		completed = complete,
+		total = total,
+		items = output_list
+	}
+	--return {name = tab_logs.quests[mission_type].name, completed = complete, total = total, items = output_list}
 end
 
 return quest_util

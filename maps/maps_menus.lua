@@ -139,7 +139,7 @@ return {
 			[23] = "Assistant #3 Goal #3",
 			[24] = "Assistant #4 Goal #3",
 			[25] = "Instructor #1 Goal #3",
-			[26] = "Instructor #2 Goal #3", 
+			[26] = "Instructor #2 Goal #3",
 			[27] = "Instructor #3 Goal #3",
 			[28] = "Instructor #4 Goal #3",
 		},

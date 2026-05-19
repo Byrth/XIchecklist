@@ -52,7 +52,7 @@ util.cleanspaces = function(str)
 end
 
 util.list_item = function(category, text, completed, obtainmethod)
-	if (completed ~= true) then local completed = false end
+	if (completed ~= true) then completed = false end
 	if (text == nil) then return end
 	local item = {
 		category = category,
