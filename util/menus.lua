@@ -92,7 +92,13 @@ menus_util.log_outposts = function()
 	end
 	playertracker.outposts_completed = complete
 	playertracker.outposts_total = total
-	return output_list
+	tab_logs.outposts = {
+		name = tab_logs.outposts.name,
+		completed = complete,
+		total = total,
+		items = output_list
+	}
+	--return output_list
 end
 
 menus_util.handle_chatnachoq = function(parseddata)
@@ -136,7 +142,13 @@ menus_util.log_protowaypoints = function()
 	end
 	playertracker.protowaypoints_completed = complete
 	playertracker.protowaypoints_total = total
-	return output_list
+	tab_logs.protowaypoints = {
+		name = tab_logs.protowaypoints.name,
+		completed = complete,
+		total = total,
+		items = output_list
+	}
+	--return output_list
 end
 
 menus_util.handle_burrowsnpc = function(parseddata)
@@ -199,7 +211,13 @@ menus_util.log_meeble_burrows = function()
 	end
 	playertracker.meebleburrows_completed = complete
 	playertracker.meebleburrows_total = total
-	return output_list
+	tab_logs.meebleburrows = {
+		name = tab_logs.meebleburrows.name,
+		completed = complete,
+		total = total,
+		items = output_list
+	}
+	--return output_list
 end
 
 menus_util.handle_katsunaga = function(parseddata)
@@ -238,7 +256,13 @@ menus_util.log_fishes = function()
 		end
 	end
 	playertracker.fishes_completed = complete
-	return output_list
+	tab_logs.fishes = {
+		name = tab_logs.fishes.name,
+		completed = complete,
+		total = 164,
+		items = output_list
+	}
+	--return output_list
 end
 
 menus_util.handle_atmacitenpc = function(parseddata)
@@ -274,6 +298,12 @@ menus_util.log_atmacitelevels = function()
 		table.insert(output_list, util.list_item('atmacite', 'Lv. ('..level..'/15) ' .. atmacite.en, completion))
 	end
 	playertracker.atmacite_completed = complete
+	tab_logs.atmacite = {
+		name = tab_logs.atmacite.name,
+		completed = complete,
+		total = 600,
+		items = output_list
+	}
 	return output_list
 end
 
@@ -343,7 +373,13 @@ menus_util.log_titles = function()
 	end
 	playertracker.Titles_completed = complete
 	playertracker.Titles_total = total
-	return output_list
+	tab_logs.titles = {
+		name = tab_logs.titles.name,
+		completed = complete,
+		total = total,
+		items = output_list
+	}
+	--return output_list
 end
 
 menus_util.list_titles_bycontent = function()
@@ -418,6 +454,12 @@ menus_util.log_sheolgaol = function()
 		end
 	end
 	playertracker.sheolgaoltiers_completed = complete
+	tab_logs.sheolgaol = {
+		name = tab_logs.sheolgaol.name,
+		completed = complete,
+		total = 425,
+		items = output_list
+	}
 	return output_list
 end
 
@@ -446,7 +488,13 @@ menus_util.log_sheolabc = function(sheol)
 	end
 	playertracker[sheol..'_completed'] = complete
 	playertracker[sheol..'_total'] = total
-	return output_list
+	tab_logs[sheol] = {
+		name = tab_logs[sheol].name,
+		completed = complete,
+		total = total,
+		items = output_list
+	}
+	--return output_list
 end
 
 menus_util.handle_vorseals_npc = function(parseddata)
@@ -481,7 +529,13 @@ menus_util.log_vorseals = function()
 	end
 	playertracker.vorseals_completed = complete
 	playertracker.vorseals_total = total
-	return output_list
+	tab_logs.vorseals = {
+		name = tab_logs.vorseals.name,
+		completed = complete,
+		total = total,
+		items = output_list
+	}
+	--return output_list
 end
 
 menus_util.menu_npcs = {

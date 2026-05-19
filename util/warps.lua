@@ -29,7 +29,13 @@ warps_util.log_warps = function(warptype)
 	end
 	playertracker[warptype..'_completed'] = complete
 	playertracker[warptype..'_total'] = total
-	return output_list
+	tab_logs[warptype] = {
+		name = tab_logs[warptype].name,
+		completed = complete,
+		total = total,
+		items = output_list
+	}
+	--return output_list
 end
 
 warps_util.log_visitedzones = function(data)
@@ -51,7 +57,13 @@ warps_util.log_visitedzones = function(data)
 	end
 	playertracker.zones_completed = complete
 	playertracker.zones_total = total
-	return output_list
+	tab_logs.zones = {
+		name = tab_logs.zones.name,
+		completed = complete,
+		total = total,
+		items = output_list
+	}
+	--return output_list
 end
 
 return warps_util

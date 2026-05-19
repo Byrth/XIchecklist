@@ -52,7 +52,7 @@ util.cleanspaces = function(str)
 end
 
 util.list_item = function(category, text, completed, obtainmethod)
-	if (completed ~= true) then local completed = false end
+	if (completed ~= true) then completed = false end
 	if (text == nil) then return end
 	local item = {
 		category = category,
@@ -78,7 +78,7 @@ end
 util.table_to_clipboard = function(tbl)
 	local result = ""
     for i = 1, #tbl do
-		local text = tostring(tbl[i])
+		local text = tostring(tbl[i].text)
 		text = text:gsub("\\cs%(%d+,%d+,%d+%)", "")
 		text = text:gsub("\\cr", "")
         result = result .. text .. "\n"

@@ -23,8 +23,14 @@ mons_util.log_racejobinstincts = function()
 		table.insert(output_list, util.list_item(nil, name, completion))
 	end
 	playertracker.racejobinstinct_completed = obtained
-	playertracker.racejobinstinct_total = total	
-	return output_list
+	playertracker.racejobinstinct_total = total
+	tab_logs.racejobinstincts = {
+		name = tab_logs.racejobinstincts.name,
+		completed = obtained,
+		total = total,
+		items = output_list
+	}
+	--return output_list
 end
 
 mons_util.log_monsterlevels = function()
@@ -44,8 +50,14 @@ mons_util.log_monsterlevels = function()
 		table.insert(output_list, util.list_item(nil, 'Lv. ' .. mons_util.monsterlevels[id] .. ' ' .. monster, completion)) -- add monster
 	end
 	playertracker.monsterlevels_completed = complete
-	playertracker.monsterlevels_total = total	
-	return output_list
+	playertracker.monsterlevels_total = total
+	tab_logs.monsterlevels = {
+		name = tab_logs.monsterlevels.name,
+		completed = complete,
+		total = total,
+		items = output_list
+	}
+	--return output_list
 end
 
 mons_util.log_variants = function()
@@ -62,8 +74,14 @@ mons_util.log_variants = function()
 		table.insert(output_list, util.list_item(nil, name, completion))
 	end
 	playertracker.monstervariants_completed = obtained
-	playertracker.monstervariants_total = total	
-	return output_list
+	playertracker.monstervariants_total = total
+	tab_logs.monstervariants = {
+		name = tab_logs.monstervariants.name,
+		completed = obtained,
+		total = total,
+		items = output_list
+	}
+	--return output_list
 end
 
 mons_util.log_monsterinstincts = function()
@@ -87,8 +105,14 @@ mons_util.log_monsterinstincts = function()
 		end
 	end
 	playertracker.monsterinsincts_completed = obtained
-	playertracker.monsterinsincts_total = total	
-	return output_list
+	playertracker.monsterinsincts_total = total
+	tab_logs.monsterinstincts = {
+		name = tab_logs.monsterinstincts.name,
+		completed = obtained,
+		total = total,
+		items = output_list
+	}
+	--return output_list
 end
 
 return mons_util

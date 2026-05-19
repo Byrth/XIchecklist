@@ -23,7 +23,13 @@ mmm_util.log_vouchers = function()
 	end
 	playertracker.mmmvouchers_completed = obtained
 	playertracker.mmmvouchers_total = total
-	return output_list
+	tab_logs.mmmvouchers = {
+		name = tab_logs.mmmvouchers.name,
+		completed = obtained,
+		total = total,
+		items = output_list
+	}
+	--return output_list
 end
 
 mmm_util.log_runes = function()
@@ -41,7 +47,13 @@ mmm_util.log_runes = function()
 	end
 	playertracker.mmmrunes_completed = obtained
 	playertracker.mmmrunes_total = total
-	return output_list
+	tab_logs.mmmrunes = {
+		name = tab_logs.mmmrunes.name,
+		completed = obtained,
+		total = total,
+		items = output_list
+	}
+	--return output_list
 end
 
 return mmm_util

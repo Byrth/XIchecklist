@@ -1,62 +1,91 @@
 texts = require('util/texts')
 -- UI CONSTANTS
-UI_SCALE		= tonumber(trackermenusettings.ui_scale) or 1
-FONT_SIZE		= function() return 12 * UI_SCALE end
-LINE_HEIGHT		= function() return 16 * UI_SCALE end
-PADDING			= function() return 8 * UI_SCALE end
-CHAR_WIDTH		= function() return (FONT_SIZE()/(2*UI_SCALE)) * UI_SCALE end
-VISIBLE_ROWS	= 15
+UI_SCALE				= tonumber(trackermenusettings.ui_scale) or 1
+FONT_SIZE				= function() return 12 * UI_SCALE end
+SUBTAB_FONT_SIZE 		= function() return 0.9 * FONT_SIZE() end
+LINE_HEIGHT				= function() return 16 * UI_SCALE end
+PADDING					= function() return 8 * UI_SCALE end
+SUBTAB_PADDING			= function() return 0.8 * PADDING() end
+CHAR_WIDTH				= function() return (FONT_SIZE()/(2*UI_SCALE)) * UI_SCALE end
+VISIBLE_ROWS			= 15
+-- UI COLORS
+UI_BG					= {red = 12, green = 12,  blue = 32,  alpha = 210}
+UI_TABBG				= {red = 30, green = 60,  blue = 120,  alpha = 240}
+UI_TABBG_SELECTED		= {red = 70, green = 130, blue = 200, alpha = 220}
+UI_SUBTABBG				= {red = 25, green = 25,  blue = 25,  alpha = 200}
+UI_SUBTABBG_SELECTED	= {red = 70, green = 130, blue = 200, alpha = 220}
+UI_SUBTABCOMPBG			= {red = 35, green = 110,  blue = 35,  alpha = 220}
 -- UI WINDOW STATE
-active_tab		= 1
-scroll			= 0
-selected		= 1
+active_tab				= 1
+active_subtab			= 0
+scroll					= 0
+selected				= 1
+maintabs_height			= 0
+subtabs_height			= 0
 -- UI DATA
 tabs = {
     {
         name = 'Main',
-        items = {}
+        items = L{},
+		button = {},
     },
     {
         name = 'Story',
-        items = {}
-    },
-    {
-        name = 'Campaign',
-        items = {}
+        items = L{},
+		button = {},
+		tabs = {'sandoriamissions', 'bastokmissions', 'windurstmissions', 'zilartmissions', 'copmissions', 'assaults', 'ahturhganmissions', 'campaign', 'wotgmissions', 'acpmissions', 'mkdmissions', 'asamissions', 'soamissions', 'rovmissions', 'tvrmissions', 'sandoria', 'bastok', 'windurst', 'jeuno', 'ahturhgan', 'crystalwar', 'outlands', 'other', 'abyssea', 'adoulin', 'coalition'},
     },
 	{
         name = 'Fish',
-        items = {}
+        items = L{},
+		button = {},
+		tabs = {'fishes'},
     },
 	{
         name = 'Key Items',
-        items = {}
+        items = L{},
+		button = {},
+		tabs = {'Permanent_Key_Items', 'Magical_Maps', 'Mounts', 'Active_Effects', 'Abyssea', 'Voidwatch', 'Mog_Garden', 'Claim_Slips', 'atmacite'},
     },
 	{
         name = 'Magic',
-        items = {}
+        items = L{},
+		button = {},
+		tabs = {'WhiteMagic', 'BlackMagic', 'SummonerPact', 'Ninjutsu', 'BardSong', 'BlueMagic', 'Geomancy', 'Trust'}
     },
 	{
         name = 'Warps',
-        items = {}
+        items = L{},
+		button = {},
+		tabs = {'homepoints', 'survivalguides', 'waypoints', 'telepoints', 'cavernousmaws', 'lycopodium', 'eschanportals', 'outposts', 'protowaypoints', 'zones'},
     },
 	{
         name = 'Monstrosity',
-        items = {}
+        items = L{},
+		button = {},
+		tabs = {'monsterlevels', 'monstervariants', 'racejobinstincts', 'monsterinstincts'},
     },
 	{
         name = 'Titles',
-        items = {}
+        items = L{},
+		button = {},
+		tabs = {'titles', --[['titles_by_content']]},
     },
 	{
         name = 'RoE',
-        items = {}
+        items = L{},
+		button = {},
+		tabs = {'roe'},
     },
 	{
         name = 'Battle Content',
-        items = {}
+        items = L{},
+		button = {},
+		tabs = {'mmm_mazecount', 'mmmvouchers','mmmrunes','meebleburrows','sheola','sheolb','sheolc','sheolgaol','vorseals'},
     },
 }
+
+subtabs = T{}
 
 -- UI TEXT OBJECT
 ui = {}
@@ -68,8 +97,8 @@ ui.menu = texts.new('', {
         red = 255, green = 255, blue = 255,
     },
     bg = {
-        red = 25, green = 25, blue = 25,
-        alpha = 200,
+        red = UI_BG.red, green = UI_BG.green, blue = UI_BG.blue,
+        alpha = UI_BG.alpha,
     },
     padding = PADDING(),
 })
@@ -84,8 +113,8 @@ initiate_tabs = function()
 				red = 255, green = 255, blue = 255,
 			},
 			bg = {
-				red = 25, green = 25, blue = 25,
-				alpha = 200,
+				red = UI_TABBG.red, green = UI_TABBG.green, blue = UI_TABBG.blue,
+				alpha = UI_TABBG.alpha,
 			},
 			padding = PADDING(),
 			flags = {
@@ -94,7 +123,63 @@ initiate_tabs = function()
 		})
 		tabs[i].button:text(tab.name)
 		tabs[i].button:register_event('left_click', function()
+			if tabs[i].tabs then
+				tabs[i].items = L{}
+				for idx, tab in ipairs(tabs[i].tabs) do
+					append_header(i, tab_logs[tab].name..' (%d/%d)', tab_logs[tab].completed, tab_logs[tab].total)
+					if (addonhelptext[tab]) then
+						for hi, helptext in pairs(addonhelptext[tab]) do
+							append_addonhelp(i, addonhelptext[tab][hi][1], playertracker.talk_to_npc[addonhelptext[tab][hi][2]])
+						end
+					end
+					append_items(tabs[i].items, tab_logs[tab].items)
+				end
+			end
 			active_tab = i
+			active_subtab = 0
+			selected = 1
+			scroll = 0
+			draw()
+		end)
+		if tabs[i].tabs then
+			initiate_subtabs(i, tabs[i].tabs)
+		end
+	end
+end
+
+initiate_subtabs = function(activetab, subtabslist)
+	tabs[activetab].subtabs = {}
+	for i, tab in ipairs(subtabslist) do
+		tabs[activetab].subtabs[i] = {}
+		tabs[activetab].subtabs[i].active_tab = activetab
+		tabs[activetab].subtabs[i].button = texts.new('', {
+			pos = {x = 0, y = 0},
+			text = {
+				font = 'Arial',
+				size = FONT_SIZE(),
+				red = 255, green = 255, blue = 255,
+			},
+			bg = {
+				red = UI_SUBTABBG.red, green = UI_SUBTABBG.green, blue = UI_SUBTABBG.blue,
+				alpha = UI_SUBTABBG.alpha,
+			},
+			padding = PADDING(),
+			flags = {
+				draggable = false,
+			},
+		})
+		tabs[activetab].subtabs[i].button:text(defaulttab_logs[tab].name)
+		tabs[activetab].subtabs[i].tab = tab
+		tabs[activetab].subtabs[i].button:register_event('left_click', function()
+			tabs[activetab].items = L{}
+			append_header(activetab, tab_logs[tab].name..' (%d/%d)', tab_logs[tab].completed, tab_logs[tab].total)
+			if (addonhelptext[tab]) then
+				for i, helptext in pairs(addonhelptext[tab]) do
+					append_addonhelp(activetab, addonhelptext[tab][i][1], playertracker.talk_to_npc[addonhelptext[tab][i][2]])
+				end
+			end
+			append_items(tabs[activetab].items, tab_logs[tab].items)
+			active_subtab = i
 			selected = 1
 			scroll = 0
 			draw()
@@ -104,22 +189,74 @@ end
 
 draw_tabs = function()
 	local total_xextent, total_yextent = 0, 0
+	local xextent, yextent = 0, 0
 	for i, tab in ipairs(tabs) do
 		tabs[i].button:pos(ui.menu:pos_x()+total_xextent, ui.menu:pos_y())
 		tabs[i].button:visible(ui.menu:visible())
 		tabs[i].button:size(FONT_SIZE())
 		tabs[i].button:pad(PADDING())
 		if active_tab == i then
-			tabs[i].button:bg_color(70, 130, 200)
-			tabs[i].button:bg_alpha(220)
+			tabs[i].button:bg_color(UI_TABBG_SELECTED.red, UI_TABBG_SELECTED.green, UI_TABBG_SELECTED.blue)
+			tabs[i].button:bg_alpha(UI_TABBG_SELECTED.alpha)
 		else
-			tabs[i].button:bg_color(25, 25, 25)
-			tabs[i].button:bg_alpha(200)
+			tabs[i].button:bg_color(UI_TABBG.red, UI_TABBG.green, UI_TABBG.blue)
+			tabs[i].button:bg_alpha(UI_TABBG.alpha)
 		end
-		local xextent, yextent = tabs[i].button:extents()
+		xextent, yextent = tabs[i].button:extents()
 		total_xextent = total_xextent + xextent
 	end
 	ui.width = total_xextent
+	maintabs_height = yextent
+end
+
+draw_subtabs = function()
+	local total_xextent, total_yextent = 0, maintabs_height+PADDING()
+	local xextent, yextent = 0, 0
+	local lines = 0
+	hide_subtabs()
+	if tabs[active_tab].subtabs then
+		lines = 1
+		for i, tab in pairs(tabs[active_tab].subtabs) do
+			tabs[active_tab].subtabs[i].button:pos(ui.menu:pos_x()+total_xextent, ui.menu:pos_y()+total_yextent)
+			local tabname = tabs[active_tab].subtabs[i].tab
+			tabs[active_tab].subtabs[i].button:text(defaulttab_logs[tabname].name .. ' (%d/%d)':format(tab_logs[tabname].completed, tab_logs[tabname].total))
+			tabs[active_tab].subtabs[i].button:visible(ui.menu:visible())
+			tabs[active_tab].subtabs[i].button:size(SUBTAB_FONT_SIZE())
+			tabs[active_tab].subtabs[i].button:pad(SUBTAB_PADDING())
+			xextent, yextent = tabs[active_tab].subtabs[i].button:extents()
+			total_xextent = total_xextent + xextent
+			if active_subtab == i then
+				tabs[active_tab].subtabs[i].button:bg_color(UI_SUBTABBG_SELECTED.red, UI_SUBTABBG_SELECTED.green, UI_SUBTABBG_SELECTED.blue)
+				tabs[active_tab].subtabs[i].button:bg_alpha(UI_SUBTABBG_SELECTED.alpha)
+			else
+				if (tab_logs[tabname].completed >= tab_logs[tabname].total) and (tab_logs[tabname].total > 0) then
+					tabs[active_tab].subtabs[i].button:bg_color(UI_SUBTABCOMPBG.red, UI_SUBTABCOMPBG.green, UI_SUBTABCOMPBG.blue)
+					tabs[active_tab].subtabs[i].button:bg_alpha(UI_SUBTABCOMPBG.alpha)
+				else
+					tabs[active_tab].subtabs[i].button:bg_color(UI_SUBTABBG.red, UI_SUBTABBG.green, UI_SUBTABBG.blue)
+					tabs[active_tab].subtabs[i].button:bg_alpha(UI_SUBTABBG.alpha)
+				end
+			end
+			if total_xextent > ui.width then
+				total_xextent = xextent
+				lines = lines + 1
+				total_yextent = total_yextent + yextent
+				tabs[active_tab].subtabs[i].button:pos(ui.menu:pos_x(), ui.menu:pos_y()+total_yextent)
+			end
+		end
+	end
+	subtabs_height = (lines > 0 ) and total_yextent or 0
+end
+
+hide_subtabs = function()
+	for i, tab in ipairs(tabs) do
+		if tabs[i].subtabs then
+			for ti, tab in pairs(tabs[i].subtabs) do
+				tabs[i].subtabs[ti].button:hide()
+			end
+		end
+	end
+	subtabs_height = 0
 end
 
 append_items = function(dst, src)
@@ -127,48 +264,39 @@ append_items = function(dst, src)
         return
     end
     for _, item in ipairs(src) do
-		local text = item.text
-		local display = true
-		local menucolor = '(255,255,0)'
-		if (item.completed == true and trackermenusettings.showcompleted == false) then
-			display = false
-		end
-		if item.completed == true then
-			menucolor = '(0,255,0)'
-		end
-		if item.obtainmethod ~= nil then
-			local obtainmethod = '\\cs(255,255,255)[' .. item.obtainmethod .. ']\\cr\\cs'..menucolor
-			if item.category == 'Titles' then
-				text = obtainmethod..' '..text
-			else
-				text = text..' '..obtainmethod
-			end
-		end
-		if item.category ~= nil then 
-			text = '['..item.category..'] '..text
-		end
-		local text = '\\cs'..menucolor..text..'\\cr'
-		if (display == true) then
-			table.insert(dst, text)
-		end
+		dst:append(item)
     end
+end
+
+format_item = function(item)
+	local text = item.text
+	local menucolor = item.completed and '(0,255,0)' or '(255,255,0)'
+	if item.obtainmethod ~= nil then
+		local obtainmethod = '\\cs(255,255,255)[' .. item.obtainmethod .. ']\\cr\\cs'..menucolor
+		if item.category == 'Titles' then
+			text = obtainmethod..' '..text
+		else
+			text = text..' '..obtainmethod
+		end
+	end
+	text = '\\cs'..menucolor..text..'\\cr'
+	
+	return text
 end
 
 append_maintab = function(text, ...)
 	local args = {...}
-	local menulinecolor = '(255,255,0)'
-	if (args[1]==args[2]) then menulinecolor = '(0,255,0)' end
-	table.insert(tabs[1].items, '\\cs'..menulinecolor..'-'..text:format(...)..'\\cr')
+	local menulinecolor = (args[1]==args[2]) and '(0,255,0)' or '(255,255,0)'
+	tabs[1].items:append(util.list_item(nil, '\\cs'..menulinecolor..'-'..text:format(...)..'\\cr'))
 end
 
 append_header = function(tab, text, ...)
 	args = {...}
-	local menulinecolor = '(255,255,255)'
-	if (args[1]==args[2]) then menulinecolor = '(0,255,0)' end
+	local menulinecolor = (args[1]==args[2]) and '(0,255,0)' or '(255,255,255)'
 	text = '==== '..text..' ===='
-	table.insert(tabs[tab].items, '\\cs'..menulinecolor..text:format(...)..'\\cr')
+	tabs[tab].items:append(util.list_item(nil, '\\cs'..menulinecolor..text:format(...)..'\\cr'))
 	if args[2] == 0 then
-		table.insert(tabs[tab].items, '\\cs(235,0,0)You must zone to update.\\cr')
+		tabs[tab].items:append(util.list_item(nil, '\\cs(235,0,0)You must zone to update.\\cr'))
 	end
 end
 
@@ -195,21 +323,33 @@ end
 
 draw = function()
 	local text = ''
-	--text = text .. '\n'.. '─':rep((PADDING()/CHAR_WIDTH())+(ui.width/CHAR_WIDTH())) .. '\n'
-	text = text .. '\n───────────────────────────────────────────────────────────────────\n'
+	if ui.width then
+		text = text .. '\n'.. '─':rep((PADDING()/CHAR_WIDTH())+(ui.width/(2*CHAR_WIDTH()))) .. '\n'
+	else
+		text = text .. '\n────────────────────────────────────────────────────────────────\n'
+	end
+	if subtabs_height > 0 then
+		text = text .. ('\n'):rep(subtabs_height/LINE_HEIGHT()-1)
+	end
 	-- List
 	local items = tabs[active_tab].items
-	local count = #items
+	if (trackermenusettings.showcompleted == false) then
+		items = items:filter(function(item)
+			return item.completed == false
+		end)
+	end
+	local count = items:length()
 	if count == 0 then
 		-- add active_tab helper text here
-		items = {'\\cs(128,128,128)Change zones to update Quests / Campaigns / Warps / Monstrosity \\cr', '\\cs(128,128,128)Check the README or "//xic help" to register NPC-related data \\cr'}
+		--items = {'\\cs(128,128,128)Change zones to update Quests / Campaigns / Warps / Monstrosity \\cr', '\\cs(128,128,128)Check the README or "//xic help" to register NPC-related data \\cr'}
+		items = {util.list_item(nil, '\\cs(128,128,128)Change zones to update Quests / Campaigns / Warps / Monstrosity \\cr \n \\cs(128,128,128)Check the README or "//xic help" to register NPC-related data \\cr')}
 		count = 1
 	end
 	clamp_scroll(count)
 	for i = 1, VISIBLE_ROWS do
 		local idx = i + scroll
 		if items[idx] then
-			text = text .. (idx == selected and '\\cs(255,0,0)> ' or '  ') .. items[idx] .. '\\cr\n'
+			text = text .. (idx == selected and '\\cs(255,0,0)> ' or '  ') .. format_item(items[idx]) .. '\\cr\n'
 		end
 	end
 	ui.menu:text(text)
@@ -221,6 +361,12 @@ initiate_tabs()
 -------------------------------------------------
 windower.register_event('prerender', function()
 	draw_tabs()
+	draw_subtabs()
+end)
+
+ui.menu:register_event('drag', function()
+	draw_tabs()
+	draw_subtabs()
 end)
 
 windower.register_event('mouse', function(type, x, y, delta, blocked)
