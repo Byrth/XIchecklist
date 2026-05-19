@@ -511,12 +511,11 @@ end
 windower.register_event('incoming chunk', function(id, data, modified, injected, blocked)
 	if injected then return end
 	
-	-- do visited zones
 	if (id == 0x008) then
+		-- do visited zones
 		warps_util.log_visitedzones(data)
-	end
-	-- check current mastery rank
-	if id == 0x01B then
+	elseif id == 0x01B then
+		-- check current mastery rank
 		local parseddata = packets.parse('incoming', data)
 		if (parseddata['Mastery Rank'] > playertracker.mastery_rank) then
 			if (playertracker.mastery_rank > 0) then
@@ -529,9 +528,8 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 			playertracker.mastery_rank = parseddata['Mastery Rank']
 			playertracker:save()
 		end
-	end
-	-- do quests
-	if id == 0x056 then
+	elseif id == 0x056 then
+		-- do quests
 		local p = packets.parse('incoming', data)
 		local log = quest_logs[p.Type]
 		if log then
@@ -570,15 +568,12 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 				quest_util.log_quests(log.area)
 			end
 		end
-    end
-	-- crafting skills
-	if id == 0x062 then
+    elseif id == 0x062 then
+		-- crafting skills
 		local p = packets.parse('incoming', data)
 		playertracker.craftingskills_completed = p['Fishing Level']+p['Woodworking Level']+p['Smithing Level']+p['Goldsmithing Level']+p['Clothcraft Level']
 		+p['Leathercraft Level']+p['Bonecraft Level']+p['Alchemy Level']+p['Cooking Level']+p['Synergy Level']
-	end
-	
-	if id == 0x063 then
+	elseif id == 0x063 then
 		local parseddata = packets.parse('incoming', data)
 		-- do warps
 		if (parseddata.Order == 6) then
@@ -606,23 +601,20 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 			mons_util.log_variants()
 			mons_util.log_racejobinstincts()
 		end
-	end
-	-- handle npc menu
-	if (id == 0x033) or (id == 0x034) then
+	elseif (id == 0x033) or (id == 0x034) then
+		-- handle npc menu
 		menus_util.handle_npc_menu(data)
 		xichecklist_updatemenulogs()
 	elseif id == 0x061 then
-		-- check player info (updated when openning menu)
+		-- check player info (updated when opening menu)
 		local parseddata = packets.parse('incoming', data)
 		menus_util.add_title(parseddata.Title)
 		xichecklist_updatemenulogs()
-	end
-	if id == 0x05C then
+	elseif id == 0x05C then
 		if menu_current.npcindex then menus_util.handle_npc_submenu(data) end
 		xichecklist_updatemenulogs()
-	end
-	-- do RoE
-	if id == 0x112 then
+	elseif id == 0x112 then
+		-- do RoE
 		if (not ROE_DATA) then ROE_DATA = {} end
 		local parseddata = packets.parse('incoming', data)
 		-- the packet will be repeated four times, gather the data first
@@ -634,17 +626,17 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 			end
 			roe_util.log_roe(roe_data)
 		end
-	end
-	-- do MMM
-	if id == 0x0AD then
+	elseif id == 0x0AD then
+		-- do MMM
 		local parseddata = packets.parse('incoming', data)
 		mmm_util.handle_mmm_data(data)
 		mmm_util.log_vouchers()
 		mmm_util.log_runes()
-	end
-	if id == 0x052 then
-		-- claer npc menu
+	elseif id == 0x052 then
+		-- clear npc menu
 		menus_util.reset_current_menu()
+	else
+		return
 	end
 	throttled_update()
 end)
@@ -687,42 +679,45 @@ end
 
 xichecklist_updatetabs = function()
 	if not player then return false end
-	log_spells('WhiteMagic')
-	log_spells('BlackMagic')
-	log_spells('SummonerPact')
-	log_spells('Ninjutsu')
-	log_spells('BardSong')
-	log_spells('BlueMagic')
-	log_spells('Geomancy')
-	log_spells('Trust')
+	local playerspells = windower.ffxi.get_spells()
+	local ids = L(res.spells:keyset()):sort()
+	local spells_exclusions = require('maps/spells_exclusions')
+	log_spells('WhiteMagic', playerspells, ids, spells_exclusions)
+	log_spells('BlackMagic', playerspells, ids, spells_exclusions)
+	log_spells('SummonerPact', playerspells, ids, spells_exclusions)
+	log_spells('Ninjutsu', playerspells, ids, spells_exclusions)
+	log_spells('BardSong', playerspells, ids, spells_exclusions)
+	log_spells('BlueMagic', playerspells, ids, spells_exclusions)
+	log_spells('Geomancy', playerspells, ids, spells_exclusions)
+	log_spells('Trust', playerspells, ids, spells_exclusions)
 	
-	log_keyitems('Permanent Key Items')
-	log_keyitems('Magical Maps')
-	log_keyitems('Mounts')
-	log_keyitems('Active Effects')
-	log_keyitems('Voidwatch')
-	log_keyitems('Abyssea')
-	log_keyitems('Mog Garden')
-	log_keyitems('Claim Slips')
+	local keyitem_exclusions = require('maps/keyitems_exclusions')
+	local playerkeyitems = S(windower.ffxi.get_key_items())
+	log_keyitems('Permanent Key Items', playerkeyitems, keyitem_exclusions)
+	log_keyitems('Magical Maps', playerkeyitems, keyitem_exclusions)
+	log_keyitems('Mounts', playerkeyitems, keyitem_exclusions)
+	log_keyitems('Active Effects', playerkeyitems, keyitem_exclusions)
+	log_keyitems('Voidwatch', playerkeyitems, keyitem_exclusions)
+	log_keyitems('Abyssea', playerkeyitems, keyitem_exclusions)
+	log_keyitems('Mog Garden', playerkeyitems, keyitem_exclusions)
+	log_keyitems('Claim Slips', playerkeyitems, keyitem_exclusions)
 	
 	tab_logs.mmm_mazecount.completed = playertracker.mmm_mazecount
 	
 	log_exp()
 end
 
-log_keyitems = function(category)
+log_keyitems = function(category, playerkeyitems, keyitem_exclusions)
 	local output_list = {}
-	local keyitem_exclusions = require('maps/keyitems_exclusions')
 	local excluded = keyitem_exclusions.excluded
 	local hidden = keyitem_exclusions.hidden
 	if trackermenusettings.showexcluded then hidden = S{} end
-	local playerkeyitems = windower.ffxi.get_key_items()
 	local total, obtained = 0, 0
 	for id, keyitem in pairs(res.key_items) do
 		if keyitem.category == category and (not excluded:contains(id)) and (not hidden:contains(id)) then
 			total = total + 1
 			local completion = false
-			if table.find(playerkeyitems, id) then
+			if playerkeyitems[id] then
 				-- key item obtained
 				obtained = obtained + 1
 				completion = true
@@ -741,13 +736,9 @@ log_keyitems = function(category)
 	--return output_list
 end
 
-log_spells = function(spelltype)
+log_spells = function(spelltype, playerspells, ids, spells_exclusions)
 	local output_list = {}
-	local spells_exclusions = require('maps/spells_exclusions')
-	local playerspells = windower.ffxi.get_spells()
 	local total, obtained = 0, 0
-	--local res.spells = res.spells
-	local ids = L(res.spells:keyset()):sort()
 	for id in ids:it() do
 		local completion = false
 		if ((res.spells[id].type == spelltype) and (not res.spells[id].unlearnable) and (not spells_exclusions[id])) then
@@ -768,7 +759,6 @@ log_spells = function(spelltype)
 		total = total,
 		items = output_list
 	}
-	--return output_list
 end
 
 log_exp = function()
@@ -1018,10 +1008,6 @@ addon_init = function()
 		ui.menu:show()
 	end
 end
-
-windower.register_event('prerender', function()
-	--throttled_update()
-end)
 
 windower.register_event('load', 'login', 'logout', addon_init)
 windower.register_event('logout', addon_clear)

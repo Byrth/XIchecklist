@@ -340,9 +340,9 @@ menus_util.add_title = function(id, defer_save)
 	if (not (playertracker.titles[tostring(id)] == true)) then
 		playertracker.titles[tostring(id)] = true
 		util.addon_log('Title added: ' .. res.titles[id].en)
-	end
-	if not defer_save then
-		playertracker:save()
+		if not defer_save then
+			playertracker:save()
+		end
 	end
 end
 
