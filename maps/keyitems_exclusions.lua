@@ -461,6 +461,8 @@ return {
 		-- Mog Gardens
 		2390, -- kaleidoscopic clam
 		2391, -- glass pendulum
+		
+		2990 -- Chacharoon's sack of supplies
 	},
 	hidden = S{
 		-- old events no longer playable

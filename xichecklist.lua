@@ -1,6 +1,6 @@
 _addon.name     = 'xichecklist'
 _addon.author   = 'HiPotion'
-_addon.version  = '0.18.1'
+_addon.version  = '0.18.2'
 _addon.commands = {'xichecklist', 'xic', 'checklist', 'clist'}
 
 require('sets')
@@ -120,6 +120,9 @@ defaultplayertracker = {
 	masterlevels_completed = 0,
 	masterlevels_total = 1100,
 	masterlevels_highest = 0,
+	-- Alter Ego
+	alteregopoint_completed = 0,
+	alteregopoint_total = 550,
 	-- Warps
 	zones_completed = 0,
 	zones_total = 0,
@@ -458,6 +461,7 @@ update_maintab = function()
 	append_maintab('Merit Points %d/%d', playertracker.meritpoints_completed, 919)
 	append_maintab('Job Points Maxed %d/%d', playertracker.jobpoints_completed, 22)
 	append_maintab('Master Levels %d/%d (Highest: %d)', playertracker.masterlevels_completed, 1100, playertracker.masterlevels_highest)
+	append_maintab('Alter Ego Points %d/%d', playertracker.alteregopoint_completed, playertracker.alteregopoint_total)
 	
 	tabs[1].items:append(util.list_item(nil, '======= Warps ======='))
 	append_maintab('Home Points %d/%d', playertracker.homepoints_completed, playertracker.homepoints_total)
@@ -635,6 +639,16 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 	elseif id == 0x052 then
 		-- clear npc menu
 		menus_util.reset_current_menu()
+	elseif id == 0x08E then
+		-- do Alter Ego Points
+		local alteregopoint_completed = 0
+		--local alteregopoint_total = 0
+		for i = 17, 27 do -- Bytes 17 to 27 for HP MP etc etc -> Magic Skill (update when they add more)
+			alteregopoint_completed = alteregopoint_completed + string.byte(data, i)
+			--alteregopoint_total = alteregopoint_total + 50
+		end
+		playertracker.alteregopoint_completed = alteregopoint_completed
+		--playertracker.alteregopoint_total = alteregopoint_total
 	else
 		return
 	end
