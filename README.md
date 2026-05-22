@@ -109,3 +109,4 @@ the menu will only show missing items like quests,key items, spells, home points
 - 0.17.7 - Added multiple `//xic log` options.
 - 0.17.8 - Added Assaults.
 - 0.18.0 - UI Update, Added Abyssea & Mog Garden KI
+- 0.18.2 - Added Alter Ego Points
