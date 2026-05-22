@@ -38,10 +38,10 @@ tabs = {
 		tabs = {'sandoriamissions', 'bastokmissions', 'windurstmissions', 'zilartmissions', 'copmissions', 'assaults', 'ahturhganmissions', 'campaign', 'wotgmissions', 'acpmissions', 'mkdmissions', 'asamissions', 'soamissions', 'rovmissions', 'tvrmissions', 'sandoria', 'bastok', 'windurst', 'jeuno', 'ahturhgan', 'crystalwar', 'outlands', 'other', 'abyssea', 'adoulin', 'coalition'},
     },
 	{
-        name = 'Fish',
+        name = 'Other Content',
         items = L{},
 		button = {},
-		tabs = {'fishes'},
+		tabs = {'fishes', 'ergonlocus'},
     },
 	{
         name = 'Key Items',

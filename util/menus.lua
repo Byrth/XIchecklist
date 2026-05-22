@@ -98,7 +98,6 @@ menus_util.log_outposts = function()
 		total = total,
 		items = output_list
 	}
-	--return output_list
 end
 
 menus_util.handle_chatnachoq = function(parseddata)
@@ -148,7 +147,6 @@ menus_util.log_protowaypoints = function()
 		total = total,
 		items = output_list
 	}
-	--return output_list
 end
 
 menus_util.handle_burrowsnpc = function(parseddata)
@@ -217,7 +215,6 @@ menus_util.log_meeble_burrows = function()
 		total = total,
 		items = output_list
 	}
-	--return output_list
 end
 
 menus_util.handle_katsunaga = function(parseddata)
@@ -262,7 +259,6 @@ menus_util.log_fishes = function()
 		total = 164,
 		items = output_list
 	}
-	--return output_list
 end
 
 menus_util.handle_atmacitenpc = function(parseddata)
@@ -379,7 +375,6 @@ menus_util.log_titles = function()
 		total = total,
 		items = output_list
 	}
-	--return output_list
 end
 
 menus_util.list_titles_bycontent = function()
@@ -494,7 +489,6 @@ menus_util.log_sheolabc = function(sheol)
 		total = total,
 		items = output_list
 	}
-	--return output_list
 end
 
 menus_util.handle_vorseals_npc = function(parseddata)
@@ -535,7 +529,42 @@ menus_util.log_vorseals = function()
 		total = total,
 		items = output_list
 	}
-	--return output_list
+end
+
+menus_util.handle_rienne = function(parseddata)
+	local nibble_table = util.fourbits_to_table(parseddata['Menu Parameters'])
+	local subdata = parseddata['Menu Parameters']:sub(17, 20)
+	
+	for idx, ergonlocus in pairs(menumaps.ergonlocus) do
+		if util.has_bit(subdata, idx) and not playertracker.ergonlocus[tostring(idx)] then
+			util.addon_log('Ergon Locus added: '..ergonlocus)
+			playertracker.ergonlocus[tostring(idx)] = true
+		end
+	end
+	playertracker.talk_to_npc.ergonlocus = true
+	playertracker:save()
+end
+
+menus_util.log_ergonlocus = function()
+	local output_list = {}
+	local total, complete = 0,0
+	for id, ergonlocus in pairs(menumaps.ergonlocus) do
+		total = total+1
+		local completion = false
+		if playertracker.ergonlocus[tostring(id)] == true then
+			complete = complete+1
+			completion = true
+		end
+		table.insert(output_list, util.list_item(nil, ergonlocus, completion))
+	end
+	playertracker.ergonlocus_completed = complete
+	playertracker.ergonlocus_total = total
+	tab_logs.ergonlocus = {
+		name = tab_logs.ergonlocus.name,
+		completed = complete,
+		total = total,
+		items = output_list
+	}
 end
 
 menus_util.menu_npcs = {
@@ -589,6 +618,10 @@ menus_util.menu_npcs = {
 	
 	-- Vorseals
 	["Shiftrix"] = {zoneid=S{291}, menuid=S{9701}, menu_function=menus_util.handle_vorseals_npc},
+	
+	-- Ergon Locus
+	["Rienne"] = {zoneid=S{256}, menuid=S{7543}, menu_function=menus_util.handle_rienne},
+	
 }
 
 return menus_util
