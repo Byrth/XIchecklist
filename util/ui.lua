@@ -14,7 +14,7 @@ UI_TABBG				= {red = 30, green = 60,  blue = 120,  alpha = 240}
 UI_TABBG_SELECTED		= {red = 70, green = 130, blue = 200, alpha = 220}
 UI_SUBTABBG				= {red = 25, green = 25,  blue = 25,  alpha = 200}
 UI_SUBTABBG_SELECTED	= {red = 70, green = 130, blue = 200, alpha = 220}
-UI_SUBTABCOMPBG			= {red = 35, green = 110,  blue = 35,  alpha = 220}
+UI_SUBTABBG_COMPLETED	= {red = 35, green = 110,  blue = 35,  alpha = 220}
 -- UI WINDOW STATE
 active_tab				= 1
 active_subtab			= 0
@@ -22,6 +22,8 @@ scroll					= 0
 selected				= 1
 maintabs_height			= 0
 subtabs_height			= 0
+subtabs_initiated 		= false
+subtabs_drawn 			= false
 -- UI DATA
 tabs = {
     {
@@ -139,12 +141,14 @@ initiate_tabs = function()
 			active_subtab = 0
 			selected = 1
 			scroll = 0
+			subtabs_drawn = false
 			draw()
 		end)
 		if tabs[i].tabs then
 			initiate_subtabs(i, tabs[i].tabs)
 		end
 	end
+	subtabs_initiated = true
 end
 
 initiate_subtabs = function(activetab, subtabslist)
@@ -182,6 +186,7 @@ initiate_subtabs = function(activetab, subtabslist)
 			active_subtab = i
 			selected = 1
 			scroll = 0
+			subtabs_drawn = false
 			draw()
 		end)
 	end
@@ -210,6 +215,7 @@ draw_tabs = function()
 end
 
 draw_subtabs = function()
+	if subtabs_initiated and subtabs_drawn then return end
 	local total_xextent, total_yextent = 0, maintabs_height+PADDING()
 	local xextent, yextent = 0, 0
 	local lines = 0
@@ -224,14 +230,14 @@ draw_subtabs = function()
 			tabs[active_tab].subtabs[i].button:size(SUBTAB_FONT_SIZE())
 			tabs[active_tab].subtabs[i].button:pad(SUBTAB_PADDING())
 			xextent, yextent = tabs[active_tab].subtabs[i].button:extents()
-			total_xextent = total_xextent + xextent
+			total_xextent = total_xextent + xextent + 5
 			if active_subtab == i then
 				tabs[active_tab].subtabs[i].button:bg_color(UI_SUBTABBG_SELECTED.red, UI_SUBTABBG_SELECTED.green, UI_SUBTABBG_SELECTED.blue)
 				tabs[active_tab].subtabs[i].button:bg_alpha(UI_SUBTABBG_SELECTED.alpha)
 			else
 				if (tab_logs[tabname].completed >= tab_logs[tabname].total) and (tab_logs[tabname].total > 0) then
-					tabs[active_tab].subtabs[i].button:bg_color(UI_SUBTABCOMPBG.red, UI_SUBTABCOMPBG.green, UI_SUBTABCOMPBG.blue)
-					tabs[active_tab].subtabs[i].button:bg_alpha(UI_SUBTABCOMPBG.alpha)
+					tabs[active_tab].subtabs[i].button:bg_color(UI_SUBTABBG_COMPLETED.red, UI_SUBTABBG_COMPLETED.green, UI_SUBTABBG_COMPLETED.blue)
+					tabs[active_tab].subtabs[i].button:bg_alpha(UI_SUBTABBG_COMPLETED.alpha)
 				else
 					tabs[active_tab].subtabs[i].button:bg_color(UI_SUBTABBG.red, UI_SUBTABBG.green, UI_SUBTABBG.blue)
 					tabs[active_tab].subtabs[i].button:bg_alpha(UI_SUBTABBG.alpha)
@@ -362,9 +368,15 @@ initiate_tabs()
 windower.register_event('prerender', function()
 	draw_tabs()
 	draw_subtabs()
+	draw()
+	if not subtabs_drawn then
+		coroutine.sleep(0.1)
+		subtabs_drawn = true
+	end
 end)
 
 ui.menu:register_event('drag', function()
+	subtabs_drawn = false
 	draw_tabs()
 	draw_subtabs()
 end)
