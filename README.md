@@ -9,7 +9,7 @@
 | `//xic showcompleted` | toggle show-completed-items on/off `Default:false` |
 | `//xic showexcluded` | toggle show hidden Titles and RoE and Crafting Shield KI on/off `Default:false` |
 | `//xic copy` | copy current tab to clipboard |
-| `//xic log <category>` | print <category> in chat log.<br>Example: `//xic log summary`<br>Available categories `main` `summary` `titles` `titles_by_content` `roe` `monstrosity` (`monsterlevels` `monstervariants` `racejobinstincts` `monsterinstincts`) `mmm` (`mmmvouchers` `mmmrunes`) `meeble` `zones` `warps` (`homepoints` `survivalguides` `waypoints` `telepoints` `cavernousmaws` `lycopodium` `eschanportals` `outposts` `protowaypoints`) `atmacite` `vorseals` `fish` `odyssey` (`sheola` `sheolb` `sheolc` `sheolgaol`) `missions` `quests` (`sandoria` `bastok` `windurst` `jeuno` `ahturhgan` `assaults` `crystalwar` `outlands` `other` `abyssea` `adoulin` `coalition` `campaign` `sandoriamissions` `bastokmissions` `windurstmissions` `zilartmissions` `ahturhganmissions` `wotgmissions` `copmissions` `acpmissions` `mkdmissions` `asamissions` `soamissions` `rovmissions` `tvrmissions`)   |
+| `//xic log <category>` | print <category> in chat log.<br>Example: `//xic log summary`<br>Available categories `main` `summary` `titles` `titles_by_content` `roe` `monstrosity` (`monsterlevels` `monstervariants` `racejobinstincts` `monsterinstincts`) `mmm` (`mmmvouchers` `mmmrunes`) `meeble` `zones` `warps` (`homepoints` `survivalguides` `waypoints` `telepoints` `cavernousmaws` `lycopodium` `eschanportals` `outposts` `protowaypoints`) `atmacite` `vorseals` `ergonlocus` `fish` `odyssey` (`sheola` `sheolb` `sheolc` `sheolgaol`) `missions` `quests` (`sandoria` `bastok` `windurst` `jeuno` `ahturhgan` `assaults` `crystalwar` `outlands` `other` `abyssea` `adoulin` `coalition` `campaign` `sandoriamissions` `bastokmissions` `windurstmissions` `zilartmissions` `ahturhganmissions` `wotgmissions` `copmissions` `acpmissions` `mkdmissions` `asamissions` `soamissions` `rovmissions` `tvrmissions`)   |
 
 The following are updated by talking to NPCs (some require opening certain menus)  
 will be saved in config so only need to do it once (or when need to update)
@@ -26,6 +26,7 @@ will be saved in config so only need to do it once (or when need to update)
 | Wing Skill | Speak to chocobo kids [Arvilauge/Gonija/Kiria-Romaria](https://www.bg-wiki.com/ffxi/Category:Chocobo_Digging#Basics) |
 | Sheol Gaol & Moogle Mastery | Speak to [??? in Rabao](https://www.bg-wiki.com/ffxi/Category:Odyssey) <br>`(Status Report: Sheol Gaol)`<br>`(Status Report: Moogle Mastery)` |
 | Escha Vorseals | Speak to [Shiftrix in Reisenjima](https://www.bg-wiki.com/ffxi/Shiftrix) |
+| Ergon Locus | Speak to [Rienne in Western Adoulin](https://www.bg-wiki.com/ffxi/Rienne) |
 
 <br>
 
@@ -48,7 +49,8 @@ will be saved in config so only need to do it once (or when need to update)
 - Quests `(San d'Oria / Bastok / Windurst / Jeuno / Aht Urhgan / Crystal War / Outlands / Other / Abyssea / Adoulin / Coalition)`
 - Key items `(Permenant / Maps / Mounts / Claim Slips / Job KIs / Active Effects / Atmacite levels)`
 - Magic Spells `(White Magic / Black Magic / Summoner Pacts / Ninjutsu / Bard Songs / Blue Magic / Trusts)`
-- leveling related `(Merit / Job points / Master levels / Fishing Skill / Crafting Skill / Wing Skill)`
+- leveling related `(Merit / Job points / Master levels / Fishing Skill / Crafting Skill / Wing Skill / Alter Ego Points)`
+- Ergon Locus
 
 
 
@@ -109,5 +111,6 @@ the menu will only show missing items like quests,key items, spells, home points
 - 0.17.7 - Added multiple `//xic log` options.
 - 0.17.8 - Added Assaults.
 - 0.18.0 - UI Update, Added Abyssea & Mog Garden KI
-- 0.18.2 - Added Alter Ego Points
+- 0.18.2 - Added Alter Ego Points.
 - 0.18.6 - Added unlockable titles next to quest names, UI tabs fix.
+- 0.19.0 - Added Ergon Locus.
