@@ -110,3 +110,4 @@ the menu will only show missing items like quests,key items, spells, home points
 - 0.17.8 - Added Assaults.
 - 0.18.0 - UI Update, Added Abyssea & Mog Garden KI
 - 0.18.2 - Added Alter Ego Points
+- 0.18.6 - Added unlockable titles next to quest names, UI tabs fix.
