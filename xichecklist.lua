@@ -1,6 +1,6 @@
 _addon.name     = 'xichecklist'
 _addon.author   = 'HiPotion'
-_addon.version  = '0.18.4'
+_addon.version  = '0.18.5'
 _addon.commands = {'xichecklist', 'xic', 'checklist', 'clist'}
 
 require('sets')
@@ -862,6 +862,7 @@ windower.register_event('addon command', function(...)
 		windower.add_to_chat(100, 'Copy to clipboard')
 	elseif cmds.scale:contains(arg[1]) then
 		UI_SCALE 	= tonumber(arg[2]) or 1
+		subtabs_drawn = false
 		ui.menu:size(FONT_SIZE())
 		ui.menu:pad(PADDING())
 		trackermenusettings.ui_scale = UI_SCALE

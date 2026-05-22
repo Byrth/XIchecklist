@@ -2,7 +2,7 @@ texts = require('util/texts')
 -- UI CONSTANTS
 UI_SCALE				= tonumber(trackermenusettings.ui_scale) or 1
 FONT_SIZE				= function() return 12 * UI_SCALE end
-SUBTAB_FONT_SIZE 		= function() return 0.9 * FONT_SIZE() end
+SUBTAB_FONT_SIZE 		= function() return 0.8 * FONT_SIZE() end
 LINE_HEIGHT				= function() return 16 * UI_SCALE end
 PADDING					= function() return 8 * UI_SCALE end
 SUBTAB_PADDING			= function() return 0.8 * PADDING() end
@@ -12,7 +12,7 @@ VISIBLE_ROWS			= 15
 UI_BG					= {red = 12, green = 12,  blue = 32,  alpha = 210}
 UI_TABBG				= {red = 30, green = 60,  blue = 120,  alpha = 240}
 UI_TABBG_SELECTED		= {red = 70, green = 130, blue = 200, alpha = 220}
-UI_SUBTABBG				= {red = 25, green = 25,  blue = 25,  alpha = 200}
+UI_SUBTABBG				= {red = 75, green = 75,  blue = 100,  alpha = 200}
 UI_SUBTABBG_SELECTED	= {red = 70, green = 130, blue = 200, alpha = 220}
 UI_SUBTABBG_COMPLETED	= {red = 35, green = 110,  blue = 35,  alpha = 220}
 -- UI WINDOW STATE
@@ -244,9 +244,9 @@ draw_subtabs = function()
 				end
 			end
 			if total_xextent > ui.width then
-				total_xextent = xextent
+				total_xextent = xextent + 7
 				lines = lines + 1
-				total_yextent = total_yextent + yextent
+				total_yextent = total_yextent + yextent + 3
 				tabs[active_tab].subtabs[i].button:pos(ui.menu:pos_x(), ui.menu:pos_y()+total_yextent)
 			end
 		end
