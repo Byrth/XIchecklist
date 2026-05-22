@@ -1,6 +1,6 @@
 _addon.name     = 'xichecklist'
 _addon.author   = 'HiPotion'
-_addon.version  = '0.18.3'
+_addon.version  = '0.18.4'
 _addon.commands = {'xichecklist', 'xic', 'checklist', 'clist'}
 
 require('sets')
@@ -836,11 +836,13 @@ windower.register_event('addon command', function(...)
 		windower.add_to_chat(161,string.char(0x81, 0xA1)..string.color('Escha Vorseals', 261)..'-> Shiftrix in Reisenjima')
 	elseif cmds.show:contains(arg[1]) then
 		trackermenusettings.visibility = true
+		subtabs_drawn = false
 		trackermenusettings:save()
 		draw()
 		ui.menu:show()
 	elseif cmds.hide:contains(arg[1]) then
 		trackermenusettings.visibility = false
+		subtabs_drawn = false
 		trackermenusettings:save()
 		ui.menu:hide()
 	elseif cmds.showcompleted:contains(arg[1]) then
