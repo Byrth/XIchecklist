@@ -67,7 +67,7 @@ quest_util.log_quests = function(quest_type)
 				end
             end
 			if (not mutualcompleted) then
-				table.insert(output_list, util.list_item(nil, maps[quest_type][id], completion))
+				table.insert(output_list, util.list_item(nil, maps[quest_type][id].name, completion, maps[quest_type][id].extra))
 			end
         end
 	end

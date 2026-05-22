@@ -230,7 +230,7 @@ draw_subtabs = function()
 			tabs[active_tab].subtabs[i].button:size(SUBTAB_FONT_SIZE())
 			tabs[active_tab].subtabs[i].button:pad(SUBTAB_PADDING())
 			xextent, yextent = tabs[active_tab].subtabs[i].button:extents()
-			total_xextent = total_xextent + xextent + 5
+			total_xextent = total_xextent + xextent + 7
 			if active_subtab == i then
 				tabs[active_tab].subtabs[i].button:bg_color(UI_SUBTABBG_SELECTED.red, UI_SUBTABBG_SELECTED.green, UI_SUBTABBG_SELECTED.blue)
 				tabs[active_tab].subtabs[i].button:bg_alpha(UI_SUBTABBG_SELECTED.alpha)

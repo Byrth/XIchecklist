@@ -1034,7 +1034,7 @@ return {
 	['Paragon of Blue Mage Excellence'] = 'Quest: Transformations',
 	['Lifecycler'] = 'Quest: Treasures of the Earth',
 	['Heir of the Great Earth'] = 'Quest: Trial by Earth',
-	['Heir of the Great Fire'] = 'Quest: Trial by Earth',
+	['Heir of the Great Fire'] = 'Quest: Trial by Fire',
 	['Heir of the Great Ice'] = 'Quest: Trial by Ice',
 	['Heir of the Great Lightning'] = 'Quest: Trial by Lightning',
 	['Heir of the Great Water'] = 'Quest: Trial by Water',
