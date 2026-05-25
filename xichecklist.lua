@@ -1,6 +1,6 @@
 _addon.name     = 'xichecklist'
 _addon.author   = 'HiPotion'
-_addon.version  = '0.19.0'
+_addon.version  = '0.19.1'
 _addon.commands = {'xichecklist', 'xic', 'checklist', 'clist'}
 
 require('sets')
@@ -187,6 +187,8 @@ defaultplayertracker = {
 	vorseals_total = 0,
 	ergonlocus_completed = 0,
 	ergonlocus_total = 30,
+	emporox_completed = 0,
+	emporox_total = 0,
 	titles = {}, -- {TitleId = true}
 	outposts_unlocks = {}, -- {Menu Parameter Byte = true}
 	protowaypoints_unlocks = {}, -- {Menu Parameter Byte = true}
@@ -207,8 +209,9 @@ defaultplayertracker = {
 		['9'] = {},
 		['10'] = {},
 	},
-	ergonlocus = {},
 	vorseals = {}, -- {Menu Parameter nibble = value}
+	ergonlocus = {},
+	emporox_unlocks = {}, -- {Menu Parameter Byte = true}
 	talk_to_npc = {
 		outpostnpc = false,
 		chatnachoq = false,
@@ -240,6 +243,7 @@ defaultplayertracker = {
 		sheolgaol = false,
 		vorseals = false,
 		ergonlocus = false,
+		emporox = false,
 	},
 }
 
@@ -270,9 +274,7 @@ defaulttab_logs = {
 	abyssea = {name = 'Abyssea Quests', completed = 0, total = 0, items = {}},
 	adoulin = {name = 'Adoulin Quests', completed = 0, total = 0, items = {}},
 	coalition = {name = 'Coalition Assignments', completed = 0, total = 0, items = {}},
-	
 	atmacite = {name = 'Atmacite Levels', completed = 0, total = 600, items = {}},
-	
 	zones = {name = 'Zones Visited', completed = 0, total = 0, items = {}},
 	homepoints = {name = 'Home Points', completed = 0, total = 0, items = {}},
 	survivalguides = {name = 'Survival Guides', completed = 0, total = 0, items = {}},
@@ -284,7 +286,7 @@ defaulttab_logs = {
 	outposts = {name = 'Outpost Warps', completed = 0, total = 0, items = {}},
 	protowaypoints = {name = 'Proto-Waypoints', completed = 0, total = 0, items = {}},
 	titles = {name = 'Titles', completed = 0, total = 0, items = {}},
-	titles_by_content = {},
+	titles_by_content = {name = 'Titles by content', completed = 0, total = 0, items = {}},
 	fishes = {name = 'Types of Fishes Caught', completed = 0, total = 164, items = {}},
 	monsterlevels = {name = 'Species Levels', completed = 0, total = 0, items = {}},
 	monstervariants = {name = 'Monster Variants', completed = 0, total = 0, items = {}},
@@ -301,6 +303,7 @@ defaulttab_logs = {
 	sheolgaol = {name = 'Sheol Gaol Vengeance', completed = 0, total = 425, items = {}},
 	vorseals = {name = 'Eschan Vorseals', completed = 0, total = 0, items = {}},
 	ergonlocus = {name = 'Ergon Locus', completed = 0, total = 0, items = {}},
+	emporox = {name = 'Emporox Goodness', completed = 0, total = 0, items = {}},
 	WhiteMagic = {name = 'White Magic', completed = 0, total = 0, items = {}},
 	BlackMagic = {name = 'Black Magic', completed = 0, total = 0, items = {}},
 	SummonerPact = {name = 'Summoner Pacts', completed = 0, total = 0, items = {}},
@@ -373,6 +376,9 @@ addonhelptext = {
 	},
 	ergonlocus = {
 		{'You must talk to \\cs(255,255,255)Rienne\\cr @ \\cs(50,150,255)Western Adoulin (J-9)\\cr', 'ergonlocus'},
+	},
+	emporox = {
+		{'You must talk to \\cs(255,255,255)Emporox\\cr @ \\cs(50,150,255)Reisenjima #8\\cr', 'emporox'},
 	},
 }
 
@@ -515,10 +521,12 @@ update_maintab = function()
 	append_addonhelp(1, 'You must talk to \\cs(255,255,255)???\\cr @ \\cs(50,150,255)Rabao (I-8)\\cr (Status Report: Sheol Gaol)', playertracker.talk_to_npc.sheolgaol)
 	append_maintab('Eschan Vorseals (%d/%d)', playertracker.vorseals_completed, playertracker.vorseals_total)
 	append_addonhelp(1, 'You must talk to \\cs(255,255,255)Shiftrix\\cr @ \\cs(50,150,255)Reisenjima (F-12)\\cr', playertracker.talk_to_npc.vorseals)
+	append_maintab('Emporox Goodness %d/%d', playertracker.emporox_completed, playertracker.emporox_total)
+	append_addonhelp(1, 'You must talk to \\cs(255,255,255)Emporox\\cr @ \\cs(50,150,255)Reisenjima #8\\cr', playertracker.talk_to_npc.emporox)
 	
 	tabs[1].items:append(util.list_item(nil, '======= Titles ======='))
 	append_maintab('Titles %d/%d', playertracker.Titles_completed, playertracker.Titles_total)
-	append_items(tabs[1].items, tab_logs.titles_by_content)
+	append_items(tabs[1].items, tab_logs.titles_by_content.items)
 end
 
 windower.register_event('incoming chunk', function(id, data, modified, injected, blocked)
@@ -692,13 +700,14 @@ xichecklist_updatemenulogs = function()
 	menus_util.log_atmacitelevels()
 	menus_util.log_meeble_burrows()
 	menus_util.log_titles()
-	tab_logs.titles_by_content = menus_util.list_titles_bycontent()
+	menus_util.list_titles_bycontent()
 	menus_util.log_sheolabc('sheola')
 	menus_util.log_sheolabc('sheolb')
 	menus_util.log_sheolabc('sheolc')
 	menus_util.log_sheolgaol()
 	menus_util.log_vorseals()
 	menus_util.log_ergonlocus()
+	menus_util.log_emporox()
 end
 
 xichecklist_updatetabs = function()
@@ -845,6 +854,7 @@ windower.register_event('addon command', function(...)
 		windower.add_to_chat(161,string.char(0x81, 0xA1)..string.color('Sheol Gaol Vengeance', 261)..'-> ??? in Rabao (Status Report: Sheol Gaol)')
 		windower.add_to_chat(161,string.char(0x81, 0xA1)..string.color('Escha Vorseals', 261)..'-> Shiftrix in Reisenjima')
 		windower.add_to_chat(161,string.char(0x81, 0xA1)..string.color('Ergon Locus', 261)..'-> Rienne in Western Adoulin')
+		windower.add_to_chat(161,string.char(0x81, 0xA1)..string.color('Emporox Goodness', 261)..'-> Emporox in Reisenjima')
 	elseif cmds.show:contains(arg[1]) then
 		trackermenusettings.visibility = true
 		subtabs_drawn = false
@@ -1001,7 +1011,7 @@ windower.register_event('addon command', function(...)
 				windower.add_to_chat(160, '=== Sheol Gaol (%d/%d) ===':format(playertracker.sheolgaoltiers_completed, playertracker.sheolgaoltiers_total))
 				util.log_tablog(tab_logs.sheolgaol.items)
 			elseif tab_logs[arg[2]] then
-				if not (arg[2] == 'title_by_content') then
+				if not (arg[2] == 'titles_by_content') then
 					windower.add_to_chat(160, '=== '.. tab_logs[arg[2]].name .. ' (%d/%d) ===':format(playertracker[arg[2]..'_completed'], playertracker[arg[2]..'_total']))
 				end
 				util.log_tablog(tab_logs[arg[2]].items)
@@ -1010,7 +1020,7 @@ windower.register_event('addon command', function(...)
 			windower.add_to_chat(160, 'Must specify category')
 			windower.add_to_chat(160, 'Example: //xic log '..string.color('titles', 221))
 			windower.add_to_chat(160, 'Available categories: main summary titles titles_by_content roe monstrosity mmm meeble zones warps fish odyssey missions quests')
-			windower.add_to_chat(160, 'homepoints survivalguides waypoints telepoints cavernousmaws lycopodium eschanportals outposts protowaypoints atmacite vorseals ergonlocus')
+			windower.add_to_chat(160, 'homepoints survivalguides waypoints telepoints cavernousmaws lycopodium eschanportals outposts protowaypoints atmacite vorseals ergonlocus emporox')
 			windower.add_to_chat(160, 'monsterlevels monstervariants racejobinstincts monsterinstincts mmmvouchers mmmrunes sheola sheolb sheolc sheolgaol')
 			windower.add_to_chat(160, 'sandoria bastok windurst jeuno ahturhgan crystalwar outlands other abyssea adoulin coalition campaign')
 			windower.add_to_chat(160, 'sandoriamissions bastokmissions windurstmissions zilartmissions ahturhganmissions wotgmissions copmissions acpmissions mkdmissions asamissions soamissions rovmissions tvrmissions')

@@ -487,7 +487,7 @@ return {
 	['Reserve Knight Captain'] = 'Item: Rank 9 CP/San d\'Oria',
 	['Master Caster'] = 'Item: Rank 9 CP/Windurst',
 	['Legendary Tanner'] = 'Item: Beveler\'s Escutcheon',
-	['Armory Owner'] = 'Item: Blacksmith\'s Apron',
+	['Armory Owner'] = 'Item: Blacksmith\'s Signboard',
 	['Forge Fanatic'] = 'Item: Blacksmith\'s Apron',
 	['Shell Scrimshander'] = 'Item: Boneworker\'s Apron',
 	['Curiosity Shop Owner'] = 'Item: Boneworker\'s Signboard',

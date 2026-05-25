@@ -21,7 +21,7 @@ menus_util.handle_npc_menu = function(data)
 	end
 	if (menus_util.menu_npcs[npc].zoneid:contains(windower.ffxi.get_info().zone)
 		and menus_util.menu_npcs[npc].menuid:contains(parseddata['Menu ID'])) then
-		menus_util.menu_npcs[npc].menu_function(parseddata, data) -- second parameter is data because 0x033 menu i bugged, until kayte's PR fixes it.
+		menus_util.menu_npcs[npc].menu_function(parseddata, data) -- second parameter is data because 0x033 menu is bugged, until kayte's PR fixes it.
 	end
 end
 
@@ -88,7 +88,7 @@ menus_util.log_outposts = function()
 			complete = complete+1
 			completion = true
 		end
-		table.insert(output_list, util.list_item('outpost', name, completion))
+		table.insert(output_list, util.list_item(nil, name, completion))
 	end
 	playertracker.outposts_completed = complete
 	playertracker.outposts_total = total
@@ -393,7 +393,13 @@ menus_util.list_titles_bycontent = function()
 		if (complete == total) then completion = true end
 		table.insert(output_list, util.list_item(nil, '--' .. content ..' titles %d/%d':format(complete, total), completion))
 	end
-	return output_list
+	tab_logs.titles_by_content = {
+		name = tab_logs.titles_by_content.name,
+		completed = tab_logs.titles.completed,
+		total = tab_logs.titles.total,
+		items = output_list
+	}
+	--return output_list
 end
 
 menus_util.handle_odyssey_questionmark = function(parseddata)
@@ -567,6 +573,45 @@ menus_util.log_ergonlocus = function()
 	}
 end
 
+menus_util.handle_emporox = function(parseddata)
+	for key, name in pairs(menumaps.emporox) do
+		if (util.has_bit(parseddata['Menu Parameters'], key)) then
+			menus_util.add_emporox(key)
+		end
+	end
+	playertracker.talk_to_npc.emporox = true
+	playertracker:save()
+end
+
+menus_util.add_emporox = function(id)
+	if (not (playertracker.emporox_unlocks[tostring(id)] == true)) then
+		playertracker.emporox_unlocks[tostring(id)] = true
+		util.addon_log('Emporox added: ' .. menumaps.emporox[id])
+	end
+end
+
+menus_util.log_emporox = function()
+	local output_list = {}
+	local total, complete = 0,0
+	for key, name in pairs(menumaps.emporox) do
+		total = total+1
+		local completion = false
+		if (playertracker.emporox_unlocks[tostring(key)] == true) then
+			complete = complete+1
+			completion = true
+		end
+		table.insert(output_list, util.list_item(nil, name, completion))
+	end
+	playertracker.emporox_completed = complete
+	playertracker.emporox_total = total
+	tab_logs.emporox = {
+		name = tab_logs.emporox.name,
+		completed = complete,
+		total = total,
+		items = output_list
+	}
+end
+
 menus_util.menu_npcs = {
 	-- Outpost Warp NPCs
 	['Conrad'] = {zoneid=S{234}, menuid=S{584,581}, menu_function=menus_util.handle_op_warps},
@@ -621,6 +666,9 @@ menus_util.menu_npcs = {
 	
 	-- Ergon Locus
 	["Rienne"] = {zoneid=S{256}, menuid=S{7543}, menu_function=menus_util.handle_rienne},
+	
+	-- Emporox
+	["Emporox"] = {zoneid=S{291}, menuid=S{9751}, menu_function=menus_util.handle_emporox},
 	
 }
 

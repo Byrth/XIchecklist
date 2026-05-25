@@ -71,7 +71,7 @@ tabs = {
         name = 'Titles',
         items = L{},
 		button = {},
-		tabs = {'titles', --[['titles_by_content']]},
+		tabs = {'titles', 'titles_by_content'},
     },
 	{
         name = 'RoE',
@@ -83,7 +83,7 @@ tabs = {
         name = 'Battle Content',
         items = L{},
 		button = {},
-		tabs = {'mmm_mazecount', 'mmmvouchers','mmmrunes','meebleburrows','sheola','sheolb','sheolc','sheolgaol','vorseals'},
+		tabs = {'mmm_mazecount', 'mmmvouchers','mmmrunes','meebleburrows','sheola','sheolb','sheolc','sheolgaol','vorseals', 'emporox'},
     },
 }
 

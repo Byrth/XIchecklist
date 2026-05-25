@@ -482,4 +482,22 @@ return {
 		[28] = "Halcyon Icefall",
 		[29] = "Rime Prominence",
 	},
+	emporox = {
+	-- bit index in 'Menu Parameters'
+	[96] = "Pot-filler goodness.",
+    [97] = "Voidwatcher goodness: 1.",
+    [98] = "Voidwatcher goodness: 2.",
+    [99] = "Legion clomper goodness: 1.",
+    [100] = "Legion clomper goodness: 2.",
+    [101] = "Einherjar clomper goodness: 1.",
+    [102] = "Einherjar clomper goodness: 2.",
+    --[103] = "Limbus clomper goodness: 1.",
+    --[104] = "Limbus clomper goodness: 2.",
+    [105] = "Burrower goodness: 1.",
+    [106] = "Burrower goodness: 2.",
+    [107] = "Skirmisher goodness: 1.",
+    [108] = "Skirmisher goodness: 2.",
+    [109] = "Delver goodness: 1.",
+	[110] = "Delver goodness: 2.",
+	},
 }
