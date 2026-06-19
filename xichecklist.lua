@@ -1,6 +1,6 @@
 _addon.name     = 'xichecklist'
 _addon.author   = 'HiPotion'
-_addon.version  = '0.19.2'
+_addon.version  = '0.19.3'
 _addon.commands = {'xichecklist', 'xic', 'checklist', 'clist'}
 
 require('sets')
@@ -608,7 +608,6 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
     elseif id == 0x062 then
 		-- crafting skills
 		local p = packets.parse('incoming', data)
-		local playerjob = windower.ffxi.get_player().main_job_id
 		playertracker.craftingskills_completed = p['Fishing Level']+p['Woodworking Level']+p['Smithing Level']+p['Goldsmithing Level']+p['Clothcraft Level']
 		+p['Leathercraft Level']+p['Bonecraft Level']+p['Alchemy Level']+p['Cooking Level']+p['Synergy Level']
 	elseif id == 0x063 then
@@ -963,7 +962,7 @@ windower.register_event('addon command', function(...)
 		xichecklist_updatemenulogs()
 		draw()
 	elseif cmds.copy:contains(arg[1]) then
-		windower.copy_to_clipboard(util.table_to_clipboard(tabs[active_tab].items))
+		windower.copy_to_clipboard(util.table_to_clipboard(tabs[active_tab].items, trackermenusettings.showcompleted))
 		windower.add_to_chat(100, 'Copy to clipboard')
 	elseif cmds.scale:contains(arg[1]) then
 		UI_SCALE 	= tonumber(arg[2]) or 1

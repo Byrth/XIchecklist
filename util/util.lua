@@ -75,13 +75,15 @@ util.totalpoints = function()
 	return completed, total
 end
 
-util.table_to_clipboard = function(tbl)
+util.table_to_clipboard = function(tbl, showcompleted)
 	local result = ""
     for i = 1, #tbl do
 		local text = tostring(tbl[i].text)
 		text = text:gsub("\\cs%(%d+,%d+,%d+%)", "")
 		text = text:gsub("\\cr", "")
-        result = result .. text .. "\n"
+		if (tbl[i].completed and showcompleted) or (not tbl[i].completed) then
+			result = result .. text .. "\n"
+		end
     end
     return result
 end
