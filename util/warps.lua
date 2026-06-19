@@ -52,6 +52,9 @@ warps_util.log_visitedzones = function(data)
 			completion = true
 		end
 		if not zones_exclusion:contains(zone.id) then
+			if zone.id == 227 or zone.id == 228 then
+				zone.en = zone.en .. ' (Pirates)'
+			end
 			table.insert(output_list, util.list_item(nil, zone.en, completion))
 		end
 	end
