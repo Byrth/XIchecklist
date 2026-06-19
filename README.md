@@ -116,3 +116,4 @@ the menu will only show missing items like quests,key items, spells, home points
 - 0.18.6 - Added unlockable titles next to quest names, UI tabs fix.
 - 0.19.0 - Added Ergon Locus.
 - 0.19.1 - Added Emporox Goodness.
+- 0.19.2 - added COR rolls / PUP attachments / Show completed button
