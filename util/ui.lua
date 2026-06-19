@@ -53,7 +53,7 @@ tabs = {
         name = 'Magic',
         items = L{},
 		button = {},
-		tabs = {'WhiteMagic', 'BlackMagic', 'SummonerPact', 'Ninjutsu', 'BardSong', 'BlueMagic', 'Geomancy', 'Trust'}
+		tabs = {'WhiteMagic', 'BlackMagic', 'SummonerPact', 'Ninjutsu', 'BardSong', 'BlueMagic', 'Geomancy', 'Trust', 'CorsairRoll', 'pupattachments'}
     },
 	{
         name = 'Warps',
@@ -104,6 +104,40 @@ ui.menu = texts.new('', {
     },
     padding = PADDING(),
 })
+
+ui.showcompleted = texts.new('', {
+			pos = { x = 0, y = 0},
+			text = {
+				font = 'Arial',
+				size = FONT_SIZE(),
+				red = 255, green = 255, blue = 255,
+			},
+			bg = {
+				red = UI_SUBTABBG.red, green = UI_SUBTABBG.green, blue = UI_SUBTABBG.blue,
+				alpha = UI_SUBTABBG.alpha,
+			},
+			padding = PADDING(),
+			flags = {
+				--right = true,
+				--bottom = true,
+				draggable = false,
+			},
+		})
+ui.showcompleted:text('Show Completed')
+ui.showcompleted:register_event('left_click', function()
+	trackermenusettings.showcompleted = not trackermenusettings.showcompleted
+	util.addon_log('showcompleted: '..tostring(trackermenusettings.showcompleted))
+	trackermenusettings:save()
+	xichecklist_updatemenulogs()
+	if trackermenusettings.showcompleted then
+		ui.showcompleted:bg_color(UI_SUBTABBG_SELECTED.red, UI_SUBTABBG_SELECTED.green, UI_SUBTABBG_SELECTED.blue)
+		ui.showcompleted:bg_alpha(UI_SUBTABBG_SELECTED.alpha)
+	else
+		ui.showcompleted:bg_color(UI_SUBTABBG.red, UI_SUBTABBG.green, UI_SUBTABBG.blue)
+		ui.showcompleted:bg_alpha(UI_SUBTABBG.alpha)
+	end
+end)
+ui.showcompleted:hide()
 
 initiate_tabs = function()
 	for i, tab in ipairs(tabs) do
@@ -252,6 +286,10 @@ draw_subtabs = function()
 		end
 	end
 	subtabs_height = (lines > 0 ) and total_yextent or 0
+	local menuexextent, menuyextent = ui.menu:extents()
+	local showcompletedxextent, showcompletedextent = ui.showcompleted:extents()
+	ui.showcompleted:pos(trackermenusettings.pos.x+menuexextent-showcompletedxextent, trackermenusettings.pos.y+menuyextent-showcompletedextent)
+	ui.showcompleted:visible(ui.menu:visible())
 end
 
 hide_subtabs = function()
@@ -262,6 +300,7 @@ hide_subtabs = function()
 			end
 		end
 	end
+	ui.showcompleted:hide()
 	subtabs_height = 0
 end
 
@@ -360,6 +399,10 @@ draw = function()
 	end
 	ui.menu:text(text)
 	ui.menu:pos(trackermenusettings.pos.x, trackermenusettings.pos.y)
+	local menuexextent, menuyextent = ui.menu:extents()
+	local showcompletedxextent, showcompletedextent = ui.showcompleted:extents()
+	ui.showcompleted:pos(trackermenusettings.pos.x+menuexextent-showcompletedxextent, trackermenusettings.pos.y+menuyextent-showcompletedextent)
+	--ui.showcompleted:show()
 end
 
 initiate_tabs()

@@ -262,7 +262,6 @@ return {
 		--[102] = "Unknown Survival Guide",
 		--[103] = "Unknown Survival Guide",
 		
-
 		--[104] = "Unknown Survival Guide",
 		--[105] = "Unknown Survival Guide",
 		--[106] = "Unknown Survival Guide",
@@ -382,24 +381,23 @@ return {
 		[8] = "Meriphataud gate crystal",
 	},
 	cavernousmaws = {
-		-- still need confirming, work in progress
-		[0] = "Cavernous Maw #1",
-		[1] = "Cavernous Maw #2",
-		[2] = "Cavernous Maw #3",
-		[3] = "Cavernous Maw #4",
-		[4] = "Cavernous Maw #5",
-		[5] = "Cavernous Maw #6",
-		[6] = "Cavernous Maw #7",
-		[7] = "Cavernous Maw #8",
+		[0] = "Cavernous Maw #1 (East Ronfaure)",
+		[1] = "Cavernous Maw #2 (Jugner Forest)", -- confirmed
+		[2] = "Cavernous Maw #3 (Batallia Downs)",
+		[3] = "Cavernous Maw #4 (North Gustaberg)",
+		[4] = "Cavernous Maw #5 (Pashhow Marshlands)",
+		[5] = "Cavernous Maw #6 (Rolanberry Fields)",
+		[6] = "Cavernous Maw #7 (West Sarutabaruta)",
+		[7] = "Cavernous Maw #8 (Meriphataud Mountains)", -- confirmed
 		
-		[8]  = "Cavernous Maw #9",
+		[8]  = "Cavernous Maw #9 (Sauromugue Champaign)",
 		--[9]  = "WoTG Unknown #1",
 		--[10] = "WoTG Unknown #2",
 		--[11] = "WoTG Unknown #3",
 		--[12] = "WoTG Unknown #4",
-		--[13] = "Lycopodium Batallia Downs [S]",
-		--[14] = "Lycopodium North Gustaberg [S]",
-		--[15] = "Lycopodium Garlaige Citadel [S]",
+		--[13] = "Lycopodium (Batallia Downs [S])",
+		--[14] = "Lycopodium (North Gustaberg [S])",
+		--[15] = "Lycopodium (Garlaige Citadel [S])",
 		
 		--[16] = "WoTG Unknown #5", -- kb ??
 		--[17] = "WoTG Unknown #6", -- kb ??
@@ -420,9 +418,9 @@ return {
 		--[31] = "WoTG Unknown #20",
 	},
 	lycopodium = {
-		[13] = "Lycopodium Batallia Downs [S]",
-		[14] = "Lycopodium North Gustaberg [S]",
-		[15] = "Lycopodium Garlaige Citadel [S]", 
+		[13] = "Lycopodium (Batallia Downs [S])",
+		[14] = "Lycopodium (North Gustaberg [S])",
+		[15] = "Lycopodium (Garlaige Citadel [S])", 
 	},
 	eschanportals = {
 		[0] = "Zi'tah #1",

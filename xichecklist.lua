@@ -1,6 +1,6 @@
 _addon.name     = 'xichecklist'
 _addon.author   = 'HiPotion'
-_addon.version  = '0.19.1'
+_addon.version  = '0.19.2'
 _addon.commands = {'xichecklist', 'xic', 'checklist', 'clist'}
 
 require('sets')
@@ -95,7 +95,7 @@ defaultplayertracker = {
 	Voidwatch_total = 0,
 	Mog_Garden_completed = 0,
 	Mog_Garden_total = 0,
-	-- Magic
+	-- Magic / Corsair Roll / PUP attachments
 	WhiteMagic_completed = 0,
 	WhiteMagic_total = 0,
 	BlackMagic_completed = 0,
@@ -112,6 +112,10 @@ defaultplayertracker = {
 	Geomancy_total = 0,
 	Trust_completed = 0,
 	Trust_total = 0,
+	CorsairRoll_completed = 0,
+	CorsairRoll_total = 31,
+	pupattachments_completed = 0,
+	pupattachments_total = 127,
 	-- Exp
 	meritpoints_completed = 0,
 	meritpoints_total = 919,
@@ -120,6 +124,9 @@ defaultplayertracker = {
 	masterlevels_completed = 0,
 	masterlevels_total = 1100,
 	masterlevels_highest = 0,
+	-- Skills
+	craftingskills_completed = 0,
+	craftingskills_total = 790,
 	-- Alter Ego
 	alteregopoint_completed = 0,
 	alteregopoint_total = 550,
@@ -171,8 +178,6 @@ defaultplayertracker = {
 	fishes_total = 164,
 	meebleburrows_completed = 0,
 	meebleburrows_total = 0,
-	craftingskills_completed = 0,
-	craftingskills_total = 790,
 	atmacite_completed = 0,
 	atmacite_total = 600,
 	sheola_completed = 0,
@@ -312,6 +317,8 @@ defaulttab_logs = {
 	BlueMagic = {name = 'Blue Magic', completed = 0, total = 0, items = {}},
 	Geomancy = {name = 'Geomancy', completed = 0, total = 0, items = {}},
 	Trust = {name = 'Trust Magic', completed = 0, total = 0, items = {}},
+	CorsairRoll = {name = 'Corsair Rolls', completed = 0, total = 31, items = {}},
+	pupattachments = {name = 'PUP Attachments', completed = 0, total = 127, items = {}},
 	Permanent_Key_Items = {name = 'Permanent Key Items', completed = 0, total = 0, items = {}},
 	Magical_Maps = {name = 'Magical Maps', completed = 0, total = 0, items = {}},
 	Mounts = {name = 'Mounts', completed = 0, total = 0, items = {}},
@@ -320,6 +327,7 @@ defaulttab_logs = {
 	Abyssea = {name = 'Abyssea', completed = 0, total = 0, items = {}},
 	Mog_Garden = {name = 'Mog Garden', completed = 0, total = 0, items = {}},
 	Claim_Slips = {name = 'Claim Slips', completed = 0, total = 0, items = {}},
+	--combatskills = {name = 'Combat Skills', completed = 0, total = 0, items = {}},
 }
 
 addonhelptext = {
@@ -466,6 +474,8 @@ update_maintab = function()
 	append_maintab('Blue Magic %d/%d', playertracker.BlueMagic_completed, playertracker.BlueMagic_total)
 	append_maintab('Geomancy %d/%d', playertracker.Geomancy_completed, playertracker.Geomancy_total)
 	append_maintab('Trusts %d/%d', playertracker.Trust_completed, playertracker.Trust_total)
+	append_maintab('Corsair Rolls %d/%d', playertracker.CorsairRoll_completed, playertracker.CorsairRoll_total)
+	append_maintab('Puppetmaster Attachments %d/%d', playertracker.pupattachments_completed, playertracker.pupattachments_total)
 
 	tabs[1].items:append(util.list_item(nil, '======= Leveling ======='))
 	append_maintab('Craft Skills %d/%d', playertracker.craftingskills_completed, 790)
@@ -549,6 +559,12 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 			playertracker.mastery_rank = parseddata['Mastery Rank']
 			playertracker:save()
 		end
+	elseif id == 0x044 then
+		-- PUP attachments
+		local parseddata = packets.parse('incoming', data)
+		if parseddata.Job == 18 and not parseddata.Subjob then -- if PUP main
+			log_pupattachments(data)
+		end
 	elseif id == 0x056 then
 		-- do quests
 		local p = packets.parse('incoming', data)
@@ -592,6 +608,7 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
     elseif id == 0x062 then
 		-- crafting skills
 		local p = packets.parse('incoming', data)
+		local playerjob = windower.ffxi.get_player().main_job_id
 		playertracker.craftingskills_completed = p['Fishing Level']+p['Woodworking Level']+p['Smithing Level']+p['Goldsmithing Level']+p['Clothcraft Level']
 		+p['Leathercraft Level']+p['Bonecraft Level']+p['Alchemy Level']+p['Cooking Level']+p['Synergy Level']
 	elseif id == 0x063 then
@@ -713,16 +730,16 @@ end
 xichecklist_updatetabs = function()
 	if not player then return false end
 	local playerspells = windower.ffxi.get_spells()
-	local ids = L(res.spells:keyset()):sort()
+	local spellids = L(res.spells:keyset()):sort()
 	local spells_exclusions = require('maps/spells_exclusions')
-	log_spells('WhiteMagic', playerspells, ids, spells_exclusions)
-	log_spells('BlackMagic', playerspells, ids, spells_exclusions)
-	log_spells('SummonerPact', playerspells, ids, spells_exclusions)
-	log_spells('Ninjutsu', playerspells, ids, spells_exclusions)
-	log_spells('BardSong', playerspells, ids, spells_exclusions)
-	log_spells('BlueMagic', playerspells, ids, spells_exclusions)
-	log_spells('Geomancy', playerspells, ids, spells_exclusions)
-	log_spells('Trust', playerspells, ids, spells_exclusions)
+	log_spells('WhiteMagic', playerspells, spellids, spells_exclusions)
+	log_spells('BlackMagic', playerspells, spellids, spells_exclusions)
+	log_spells('SummonerPact', playerspells, spellids, spells_exclusions)
+	log_spells('Ninjutsu', playerspells, spellids, spells_exclusions)
+	log_spells('BardSong', playerspells, spellids, spells_exclusions)
+	log_spells('BlueMagic', playerspells, spellids, spells_exclusions)
+	log_spells('Geomancy', playerspells, spellids, spells_exclusions)
+	log_spells('Trust', playerspells, spellids, spells_exclusions)
 	
 	local keyitem_exclusions = require('maps/keyitems_exclusions')
 	local playerkeyitems = S(windower.ffxi.get_key_items())
@@ -734,6 +751,12 @@ xichecklist_updatetabs = function()
 	log_keyitems('Abyssea', playerkeyitems, keyitem_exclusions)
 	log_keyitems('Mog Garden', playerkeyitems, keyitem_exclusions)
 	log_keyitems('Claim Slips', playerkeyitems, keyitem_exclusions)
+	
+	if windower.ffxi.get_player().main_job_id == 17 then -- corsair
+		local playerjobabilities = S(windower.ffxi.get_abilities().job_abilities)
+		local jobabilityids = L(res.job_abilities:keyset()):sort()
+		log_corsairrolls(playerjobabilities, jobabilityids)
+	end
 	
 	tab_logs.mmm_mazecount.completed = playertracker.mmm_mazecount
 	
@@ -766,13 +789,12 @@ log_keyitems = function(category, playerkeyitems, keyitem_exclusions)
 		total = total,
 		items = output_list
 	}
-	--return output_list
 end
 
-log_spells = function(spelltype, playerspells, ids, spells_exclusions)
+log_spells = function(spelltype, playerspells, spellids, spells_exclusions)
 	local output_list = {}
 	local total, obtained = 0, 0
-	for id in ids:it() do
+	for id in spellids:it() do
 		local completion = false
 		if ((res.spells[id].type == spelltype) and (not res.spells[id].unlearnable) and (not spells_exclusions[id])) then
 			total = total + 1
@@ -824,6 +846,68 @@ log_exp = function()
 	end
 	playertracker.masterlevels_completed = total_master_levels
 	playertracker.masterlevels_highest = highest_master_level
+end
+
+log_corsairrolls = function(playerjobabilities, jobabilityids)
+	local output_list = {}
+	local total, obtained = 0, 0
+	for id in jobabilityids:it() do
+		local completion = false
+		if ((res.job_abilities[id].type == "CorsairRoll")) then
+			total = total + 1
+			if (playerjobabilities[id] == true) then
+				-- roll learned
+				obtained = obtained + 1
+				completion = true
+			end
+			table.insert(output_list, util.list_item(nil, res.job_abilities[id].en, completion))
+		end
+	end
+	playertracker.CorsairRoll_completed = obtained
+	playertracker.CorsairRoll_total = total
+	tab_logs.CorsairRoll = {
+		name = tab_logs.CorsairRoll.name,
+		completed = obtained,
+		total = total,
+		items = output_list
+	}
+end
+
+log_pupattachments = function(data)
+	local output_list = {}
+	local total, obtained = 0, 0
+	local pup_map = require('maps/pup')
+	local pup_data = {
+		['Available Heads'] = data:sub(0x018+1, 0x018+4),
+		['Available Bodies'] = data:sub(0x01C+1, 0x01C+4),
+		['Fire Attachments'] = data:sub(0x038+1, 0x038+4),
+		['Ice Attachments'] = data:sub(0x03C+1, 0x03C+4),
+		['Wind Attachments'] = data:sub(0x040+1, 0x040+4),
+		['Earth Attachments'] = data:sub(0x044+1, 0x044+4),
+		['Thunder Attachments'] = data:sub(0x048+1, 0x048+4),
+		['Water Attachments'] = data:sub(0x04C+1, 0x04C+4),
+		['Light Attachments'] = data:sub(0x050+1, 0x050+4),
+		['Dark Attachments'] = data:sub(0x054+1, 0x054+4),
+	}
+	for key, pupdata in pairs(pup_data) do
+		for id, name in pairs(pup_map[key]) do
+			local completion = false
+			total = total + 1
+			if util.has_bit(pupdata, id) then
+				obtained = obtained + 1
+				completion = true
+			end
+			table.insert(output_list, util.list_item(nil, name, completion))
+		end
+	end
+	playertracker.pupattachments_completed = obtained
+	playertracker.pupattachments_total = total
+	tab_logs.pupattachments = {
+		name = tab_logs.pupattachments.name,
+		completed = obtained,
+		total = total,
+		items = output_list
+	}
 end
 
 draw()
