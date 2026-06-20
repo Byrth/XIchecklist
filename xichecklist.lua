@@ -1,6 +1,6 @@
 _addon.name     = 'xichecklist'
 _addon.author   = 'HiPotion'
-_addon.version  = '0.19.5'
+_addon.version  = '0.19.6'
 _addon.commands = {'xichecklist', 'xic', 'checklist', 'clist'}
 
 require('sets')
@@ -862,8 +862,11 @@ log_corsairrolls = function(playerjobabilities, jobabilityids)
 			table.insert(output_list, util.list_item(nil, res.job_abilities[id].en, completion))
 		end
 	end
-	playertracker.CorsairRoll_completed = obtained
 	playertracker.CorsairRoll_total = total
+	if obtained > playertracker.CorsairRoll_completed then -- to avoid spam save()
+		playertracker.CorsairRoll_completed = obtained
+		playertracker:save()
+	end
 	tab_logs.CorsairRoll = {
 		name = tab_logs.CorsairRoll.name,
 		completed = obtained,
@@ -899,8 +902,11 @@ log_pupattachments = function(data)
 			table.insert(output_list, util.list_item(nil, name, completion))
 		end
 	end
-	playertracker.pupattachments_completed = obtained
 	playertracker.pupattachments_total = total
+	if obtained > playertracker.pupattachments_completed then -- to avoid spam save()
+		playertracker.pupattachments_completed = obtained
+		playertracker:save()
+	end
 	tab_logs.pupattachments = {
 		name = tab_logs.pupattachments.name,
 		completed = obtained,
