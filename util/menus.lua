@@ -574,6 +574,7 @@ menus_util.log_ergonlocus = function()
 end
 
 menus_util.handle_emporox = function(parseddata)
+	if parseddata._id ~= 52 then return end
 	for key, name in pairs(menumaps.emporox) do
 		if (util.has_bit(parseddata['Menu Parameters'], key)) then
 			menus_util.add_emporox(key)
