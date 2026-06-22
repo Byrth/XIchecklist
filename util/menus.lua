@@ -399,7 +399,29 @@ menus_util.list_titles_bycontent = function()
 		total = tab_logs.titles.total,
 		items = output_list
 	}
-	--return output_list
+end
+
+menus_util.list_titles_bycontent_detailed = function()
+	local output_list = {}
+	for content, titles in pairs(titlescontnt) do
+		table.insert(output_list, util.list_item(nil, '==== ' .. content ..' ====', false))
+		for key, titleid in pairs(titles) do
+			local completion = false
+			if (playertracker.titles[tostring(titleid)] == true) then
+				completion = true
+			end
+			if (titles_howtoobtain[res.titles[titleid].en]) then
+				obtainmethod = titles_howtoobtain[res.titles[titleid].en]
+			end
+			table.insert(output_list, util.list_item(nil, res.titles[titleid].en, completion, obtainmethod))
+		end
+	end
+	tab_logs.titles_by_content_detailed = {
+		name = tab_logs.titles_by_content.name,
+		completed = tab_logs.titles.completed,
+		total = tab_logs.titles.total,
+		items = output_list
+	}
 end
 
 menus_util.handle_odyssey_questionmark = function(parseddata)

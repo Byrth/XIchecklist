@@ -1,6 +1,6 @@
 _addon.name     = 'xichecklist'
 _addon.author   = 'HiPotion'
-_addon.version  = '0.19.7'
+_addon.version  = '0.19.8'
 _addon.commands = {'xichecklist', 'xic', 'checklist', 'clist'}
 
 require('sets')
@@ -291,7 +291,8 @@ defaulttab_logs = {
 	outposts = {name = 'Outpost Warps', completed = 0, total = 0, items = {}},
 	protowaypoints = {name = 'Proto-Waypoints', completed = 0, total = 0, items = {}},
 	titles = {name = 'Titles', completed = 0, total = 0, items = {}},
-	titles_by_content = {name = 'Titles by content', completed = 0, total = 0, items = {}},
+	titles_by_content = {name = 'Titles by content (Sum)', completed = 0, total = 0, items = {}},
+	titles_by_content_detailed = {name = 'Titles by content', completed = 0, total = 0, items = {}},
 	fishes = {name = 'Types of Fishes Caught', completed = 0, total = 164, items = {}},
 	monsterlevels = {name = 'Species Levels', completed = 0, total = 0, items = {}},
 	monstervariants = {name = 'Monster Variants', completed = 0, total = 0, items = {}},
@@ -717,6 +718,7 @@ xichecklist_updatemenulogs = function()
 	menus_util.log_meeble_burrows()
 	menus_util.log_titles()
 	menus_util.list_titles_bycontent()
+	menus_util.list_titles_bycontent_detailed()
 	menus_util.log_sheolabc('sheola')
 	menus_util.log_sheolabc('sheolb')
 	menus_util.log_sheolabc('sheolc')

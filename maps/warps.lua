@@ -399,13 +399,13 @@ return {
 		--[14] = "Lycopodium (North Gustaberg [S])",
 		--[15] = "Lycopodium (Garlaige Citadel [S])",
 		
-		--[16] = "WoTG Unknown #5", -- kb ??
-		--[17] = "WoTG Unknown #6", -- kb ??
-		--[18] = "WoTG Unknown #7", -- kb ??
-		--[19] = "WoTG Unknown #8", -- kb ??
-		--[20] = "WoTG Unknown #9", -- kb ??
+		--[16] = "WoTG Unknown #5", -- kbd ??
+		--[17] = "WoTG Unknown #6", -- kbd ??
+		--[18] = "WoTG Unknown #7", -- kbd ??
+		--[19] = "WoTG Unknown #8", -- kbd ??
+		--[20] = "WoTG Unknown #9", -- kbd ??
 		--[21] = "WoTG Unknown #10", -- k ??
-		--[22] = "WoTG Unknown #11", -- b ??
+		--[22] = "WoTG Unknown #11", -- bd ??
 		--[23] = "WoTG Unknown #12", -- k ??
 		--
 		--[24] = "WoTG Unknown #13",

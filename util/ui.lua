@@ -71,7 +71,7 @@ tabs = {
         name = 'Titles',
         items = L{},
 		button = {},
-		tabs = {'titles', 'titles_by_content'},
+		tabs = {'titles', 'titles_by_content', 'titles_by_content_detailed'},
     },
 	{
         name = 'RoE',
