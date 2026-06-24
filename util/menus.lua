@@ -417,7 +417,7 @@ menus_util.list_titles_bycontent_detailed = function()
 		end
 	end
 	tab_logs.titles_by_content_detailed = {
-		name = tab_logs.titles_by_content.name,
+		name = tab_logs.titles_by_content_detailed.name,
 		completed = tab_logs.titles.completed,
 		total = tab_logs.titles.total,
 		items = output_list
