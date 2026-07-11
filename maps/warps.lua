@@ -391,31 +391,31 @@ return {
 		[7] = "Cavernous Maw #8 (Meriphataud Mountains)", -- confirmed
 		
 		[8]  = "Cavernous Maw #9 (Sauromugue Champaign)",
-		--[9]  = "WoTG Unknown #1",
-		--[10] = "WoTG Unknown #2",
-		--[11] = "WoTG Unknown #3",
-		--[12] = "WoTG Unknown #4",
+		[9]  = "WoTG Unknown #1",
+		[10] = "WoTG Unknown #2",
+		[11] = "WoTG Unknown #3",
+		[12] = "WoTG Unknown #4",
 		--[13] = "Lycopodium (Batallia Downs [S])",
 		--[14] = "Lycopodium (North Gustaberg [S])",
 		--[15] = "Lycopodium (Garlaige Citadel [S])",
 		
-		--[16] = "WoTG Unknown #5", -- kbd ??
-		--[17] = "WoTG Unknown #6", -- kbd ??
-		--[18] = "WoTG Unknown #7", -- kbd ??
-		--[19] = "WoTG Unknown #8", -- kbd ??
-		--[20] = "WoTG Unknown #9", -- kbd ??
-		--[21] = "WoTG Unknown #10", -- k ??
-		--[22] = "WoTG Unknown #11", -- bd ??
-		--[23] = "WoTG Unknown #12", -- k ??
-		--
-		--[24] = "WoTG Unknown #13",
-		--[25] = "WoTG Unknown #14",
-		--[26] = "WoTG Unknown #15",
-		--[27] = "WoTG Unknown #16",
-		--[28] = "WoTG Unknown #17",
-		--[29] = "WoTG Unknown #18",
-		--[30] = "WoTG Unknown #19",
-		--[31] = "WoTG Unknown #20",
+		[16] = "WoTG Unknown #5", -- kbd ??
+		[17] = "WoTG Unknown #6", -- kbd ??
+		[18] = "WoTG Unknown #7", -- kbd ??
+		[19] = "WoTG Unknown #8", -- kbd ??
+		[20] = "WoTG Unknown #9", -- kbd ??
+		[21] = "WoTG Unknown #10", -- k ??
+		[22] = "WoTG Unknown #11", -- bd ??
+		[23] = "WoTG Unknown #12", -- k ??
+		
+		[24] = "WoTG Unknown #13",
+		[25] = "WoTG Unknown #14",
+		[26] = "WoTG Unknown #15",
+		[27] = "WoTG Unknown #16",
+		[28] = "WoTG Unknown #17",
+		[29] = "WoTG Unknown #18",
+		[30] = "WoTG Unknown #19",
+		[31] = "WoTG Unknown #20",
 	},
 	lycopodium = {
 		[13] = "Lycopodium (Batallia Downs [S])",

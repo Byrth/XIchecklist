@@ -74,6 +74,7 @@ return {
 		616, -- Bestrider of Futures
 		620, -- Arrester of the Ascension
 		622, -- Wanderer of Time
+		623, -- Smiter of the Shadow
 		639, -- Vanquisher of Spite
 		736, -- Mender of Wings
 		737, -- Champion of the Dawn
@@ -596,56 +597,6 @@ return {
 		844, -- Spiritual★Star
 		845, -- Stippling★Star
 	},
-	['HTMB'] = {
-		780, -- Amphibian Adulterator
-		784, -- Brilliance Manifest
-		785, -- Quieter of Ancient Thoughts
-		786, -- Ark Hume Humiliator
-		787, -- Ark Elvaan Eviscerator
-		788, -- Ark Mithra Maligner
-		789, -- Ark Tarutaru Trouncer
-		790, -- Ark Galka Gouger
-		791, -- Pentarch Pacifier
-		792, -- Dream Distiller
-		797, -- Ouryu Obfuscator
-		798, -- Unwavering Blaze
-		799, -- Lancelord Divester
-		800, -- Gessho Pinioner
-		801, -- Sin Purger
-		804, -- Blaze Marshaller
-		805, -- Penitentes Blaster
-		806, -- Sirocco Tamer
-		825, -- Lithosphere Annihilator
-		826, -- Fulmination Disruptor
-		827, -- Bore Repulsor
-		945, -- Lupine Liquidator
-		946, -- Ruby Repulser
-		947, -- Devil's Demise
-		966, -- Conquerer of Fear
-		967, -- Dawn's Delight
-		1035, -- Dread Purger
-		1036, -- Sidhe Smasher
-		1037, -- Alexander Annihilator
-		1038, -- Lilith Liquidator
-		1040, -- Draconic Interloper
-		1077, -- Eternal Master
-	},
-	['BCNM'] = {
-		469, -- Wyrm Astonisher
-		770, -- Rabbit Tussler
-		771, -- Helminth Mincer
-		772, -- Mandragardener
-		773, -- Moppet Massacrer
-		774, -- Rip-roaring Limbrender
-		775, -- Shell Shocker
-		776, -- Yagudo Coopkeeper
-		777, -- Gigasplosion Expert
-		778, -- Brother-in-arms
-		779, -- Antica Hunter
-		781, -- Tonberry Toppler
-		782, -- Bloodline Corrupter
-		1031, -- Mimic Masher
-	},
 	['Master Trials'] = {
 		1010, -- Preventer of the Second Coming
 		1011, -- Lux Ex Tenebris
@@ -694,7 +645,8 @@ return {
 		728, -- Subjugator of the Veiled
 		729, -- Legendary Legionnaire
 	},
-	['Battlefield'] = {
+	['Battlefield / BCNM / HTMB'] = {
+		-- Battlefield
 		31, -- Expeditionary Trooper
 		463, -- Ouryu Overwhelmer
 		480, -- Subduer of the Mamool Ja
@@ -707,6 +659,55 @@ return {
 		733, -- Unsung Heroine
 		734, -- Epic Heroine
 		1033, -- Zeroine to Heroine
+		-- BCNM
+		469, -- Wyrm Astonisher
+		770, -- Rabbit Tussler
+		771, -- Helminth Mincer
+		772, -- Mandragardener
+		773, -- Moppet Massacrer
+		774, -- Rip-roaring Limbrender
+		775, -- Shell Shocker
+		776, -- Yagudo Coopkeeper
+		777, -- Gigasplosion Expert
+		778, -- Brother-in-arms
+		779, -- Antica Hunter
+		781, -- Tonberry Toppler
+		782, -- Bloodline Corrupter
+		1031, -- Mimic Masher
+		-- HTMB
+		780, -- Amphibian Adulterator
+		784, -- Brilliance Manifest
+		785, -- Quieter of Ancient Thoughts
+		786, -- Ark Hume Humiliator
+		787, -- Ark Elvaan Eviscerator
+		788, -- Ark Mithra Maligner
+		789, -- Ark Tarutaru Trouncer
+		790, -- Ark Galka Gouger
+		791, -- Pentarch Pacifier
+		792, -- Dream Distiller
+		797, -- Ouryu Obfuscator
+		798, -- Unwavering Blaze
+		799, -- Lancelord Divester
+		800, -- Gessho Pinioner
+		801, -- Sin Purger
+		804, -- Blaze Marshaller
+		805, -- Penitentes Blaster
+		806, -- Sirocco Tamer
+		825, -- Lithosphere Annihilator
+		826, -- Fulmination Disruptor
+		827, -- Bore Repulsor
+		945, -- Lupine Liquidator
+		946, -- Ruby Repulser
+		947, -- Devil's Demise
+		966, -- Conquerer of Fear
+		967, -- Dawn's Delight
+		1035, -- Dread Purger
+		1036, -- Sidhe Smasher
+		1037, -- Alexander Annihilator
+		1038, -- Lilith Liquidator
+		1040, -- Draconic Interloper
+		1041, -- Crystal Crusher
+		1077, -- Eternal Master
 	},
 	['Einherjar'] = {
 		477, -- Elite Einherjar
@@ -867,41 +868,47 @@ return {
 		608, -- Maze Overlord
 	},
 	['Mog Garden'] = {
+		-- Hire
 		854, -- Kit Empathizer
 		855, -- Jingly Dangler
 		856, -- Mole Manipulator
+		-- Garden Furrows
 		857, -- Agrarian Novice
 		858, -- Agrarian Initiate
 		859, -- Agrarian Professional
 		860, -- Agrarian Virtuoso
 		861, -- Agrarian Tutelar
+		-- Arboreal Grove
 		862, -- Weed Praetor
 		863, -- Tree Praetor
 		864, -- Thicket Praetor
 		865, -- Forest Praetor
 		866, -- Jungle Praetor
+		-- Mineral Vein
 		867, -- Copper Mattock
 		868, -- Silver Mattock
 		869, -- Mythril Mattock
 		870, -- Gold Mattock
 		871, -- Adamanttock
+		-- Pond Dredger
 		872, -- Puddle Patron
 		873, -- Swamp Savant
 		874, -- Pond Preceptor
 		875, -- River Regent
 		876, -- Monke-Onke Master
+		-- Coastal Fishing Net
 		877, -- Sardineophyte
 		878, -- Calamareeler
 		879, -- Octopotentate
 		880, -- Giant Squimperator
 		881, -- Leviauthority
+		-- Mog Garden Entry
 		882, -- Novice Nurseryman
 		883, -- Lesser Landscaper
 		884, -- Greater Gardener
 		885, -- Honored Horticulturist
 		886, -- Mog Gardener
-	},
-	['Monster Rearing'] = {
+		-- Monster Rearing
 		908, -- Prospective Pamperer
 		909, -- Novice Nuzzler
 		910, -- Serious Snuggler
@@ -1120,9 +1127,6 @@ return {
 		795, -- Cailimh Plumageplucker
 		796, -- Wopket Trunksplitter
 	},
-	['Campaign Ops'] = {
-		623, -- Smiter of the Shadow
-	},
 	['Meeble Burrows'] = {
 		742, -- Goldwing Squasher
 		743, -- Silagilith Detonator
@@ -1153,16 +1157,15 @@ return {
 		832, -- Perfidien Paindealer
 		833, -- Plouton Pincer
 	},
-	['NPC: Octavien'] = {
+	['Other'] = {
+		-- NPC: Parike-Poranke
+		369, -- Brown Mage Guinea Pig
+		370, -- Brown Magic By-Product
+		-- NPC: Octavien
 		889, -- Blade Enthusiast
 		890, -- Runic Emissary
 		891, -- Maester of Maddening
-	},
-	['NPC: Parike-Poranke'] = {
-		369, -- Brown Mage Guinea Pig
-		370, -- Brown Magic By-Product
-	},
-	["Vana'Bout"] = {
+		-- Vana'Bout
 		1149, -- Venerated Adventurer
 	},
 }

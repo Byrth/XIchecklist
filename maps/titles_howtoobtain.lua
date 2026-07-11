@@ -138,6 +138,7 @@ return {
 	['Unwavering Blaze'] = 'HTMB: The Warrior\'s Path II',
 	['Helminth Mincer'] = 'BCNM: The Worm\'s Turn II',
 	['Draconic Interloper'] = 'HTMB: The Wyrm God II',
+	['Crystal Crusher'] = 'HTMB: Ode of Life Bestowing',
 	['Wyrm Astonisher'] = 'BCNM: The Wyrmking Descends',
 	['Torchbearer of the 3rd Walk'] = 'WoE: Third Walk',
 	['Illuminator of the 3rd Walk'] = 'WoE: Third Walk (surged)',
