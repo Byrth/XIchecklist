@@ -10,6 +10,7 @@ local warps_bytes = {
 	cavernousmaws = {0x3C+1, 0x3F+1},
 	lycopodium = {0x3C+1, 0x3F+1},
 	eschanportals = {0x40+1, 0x44+1},
+	unknownwarps = {0x3C+1, 0x3F+1},
 }
 
 warps_util.log_warps = function(warptype)
@@ -35,7 +36,6 @@ warps_util.log_warps = function(warptype)
 		total = total,
 		items = output_list
 	}
-	--return output_list
 end
 
 warps_util.log_visitedzones = function(data)
@@ -62,6 +62,31 @@ warps_util.log_visitedzones = function(data)
 	playertracker.zones_total = total
 	tab_logs.zones = {
 		name = tab_logs.zones.name,
+		completed = complete,
+		total = total,
+		items = output_list
+	}
+end
+
+warps_util.log_unknownwarps = function(warptype) -- copy of log_warps, but avoiding counting this category in total checklist progress, until we figure out what they mean
+	if warps_util.warps_data == nil then return end
+	local subdata = warps_util.warps_data:sub(unpack(warps_bytes[warptype]))
+	local total, complete = 0, 0
+	local output_list = {}
+	-- check for obtained warp
+	for index, name in pairs(maps[warptype]) do
+		total = total+1
+		local completion = false
+		if util.has_bit(subdata, index) then
+			complete = complete+1
+			completion = true
+		end
+		table.insert(output_list, util.list_item(warptype, name, completion))
+	end
+	playertracker.unknownwarps_unlocked = complete
+	playertracker.unknownwarps_unlockable = total
+	tab_logs[warptype] = {
+		name = tab_logs[warptype].name,
 		completed = complete,
 		total = total,
 		items = output_list

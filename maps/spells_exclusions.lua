@@ -1,17 +1,5 @@
 return S{
 	
-	26, -- Dia IV
-	27, -- Dia V
-	
-	366, -- Graviga
-	
-	375, -- Foe Requiem VIII
-	384, -- Army's Paeon VII
-	385, -- Army's Paeon VIII
-	411, -- Jester's Operetta
-	413, -- Devotee Serenade
-	423, -- Massacre Elegy
-	
 	503, -- Impact
 	417, -- honor march
 	418, -- aria of passion

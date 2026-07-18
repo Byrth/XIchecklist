@@ -59,7 +59,9 @@ tabs = {
         name = 'Warps',
         items = L{},
 		button = {},
-		tabs = {'homepoints', 'survivalguides', 'waypoints', 'telepoints', 'cavernousmaws', 'lycopodium', 'eschanportals', 'outposts', 'protowaypoints', 'zones'},
+		tabs = {'homepoints', 'survivalguides', 'waypoints', 'telepoints', 'cavernousmaws', 'lycopodium', 'eschanportals', 'outposts', 'protowaypoints', 'zones',
+		'unknownwarps',
+		},
     },
 	{
         name = 'Monstrosity',

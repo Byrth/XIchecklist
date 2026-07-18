@@ -1,6 +1,6 @@
 _addon.name     = 'xichecklist'
 _addon.author   = 'HiPotion'
-_addon.version  = '0.19.10'
+_addon.version  = '0.19.11'
 _addon.commands = {'xichecklist', 'xic', 'checklist', 'clist'}
 
 require('sets')
@@ -147,6 +147,9 @@ defaultplayertracker = {
 	lycopodium_total = 3,
 	eschanportals_completed = 0,
 	eschanportals_total = 0,
+	-- unknown warp/map-related
+	unknownwarps_unlocked = 0, -- not using _completed or _total, to avoid being calculated in total checklist progress
+	unknownwarps_unlockable = 0,
 	-- Monstrosity
 	racejobinstinct_completed = 0,
 	racejobinstinct_total = 0,
@@ -217,6 +220,19 @@ defaultplayertracker = {
 	vorseals = {}, -- {Menu Parameter nibble = value}
 	ergonlocus = {},
 	emporox_unlocks = {}, -- {Menu Parameter Byte = true}
+	corsairrolls = {},
+	pupattachments = {
+		['Available Heads'] = {},
+		['Available Bodies'] = {},
+		['Fire Attachments'] = {},
+		['Ice Attachments'] = {},
+		['Wind Attachments'] = {},
+		['Earth Attachments'] = {},
+		['Thunder Attachments'] = {},
+		['Water Attachments'] = {},
+		['Light Attachments'] = {},
+		['Dark Attachments'] = {},
+	},
 	talk_to_npc = {
 		outpostnpc = false,
 		chatnachoq = false,
@@ -286,6 +302,7 @@ defaulttab_logs = {
 	waypoints = {name = 'Adoulin Waypoint', completed = 0, total = 0, items = {}},
 	telepoints = {name = 'Telepoints', completed = 0, total = 0, items = {}},
 	cavernousmaws = {name = 'Cavernous Maws', completed = 0, total = 0, items = {}},
+	unknownwarps = {name = 'Unknown Warps/Map-related', completed = 0, total = 0, items = {}},
 	lycopodium = {name = 'Lycopodium', completed = 0, total = 0, items = {}},
 	eschanportals = {name = 'Eschan Portals', completed = 0, total = 0, items = {}},
 	outposts = {name = 'Outpost Warps', completed = 0, total = 0, items = {}},
@@ -564,7 +581,7 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 		-- PUP attachments
 		local parseddata = packets.parse('incoming', data)
 		if parseddata.Job == 18 and not parseddata.Subjob then -- if PUP main
-			log_pupattachments(data)
+			update_pupattachments(data)
 		end
 	elseif id == 0x056 then
 		-- do quests
@@ -621,6 +638,7 @@ windower.register_event('incoming chunk', function(id, data, modified, injected,
 			warps_util.log_warps('waypoints')
 			warps_util.log_warps('telepoints')
 			warps_util.log_warps('cavernousmaws')
+			warps_util.log_unknownwarps('unknownwarps')
 			warps_util.log_warps('lycopodium')
 			warps_util.log_warps('eschanportals')
 		end
@@ -753,11 +771,11 @@ xichecklist_updatetabs = function()
 	log_keyitems('Mog Garden', playerkeyitems, keyitem_exclusions)
 	log_keyitems('Claim Slips', playerkeyitems, keyitem_exclusions)
 	
-	if windower.ffxi.get_player().main_job_id == 17 then -- corsair
-		local playerjobabilities = S(windower.ffxi.get_abilities().job_abilities)
-		local jobabilityids = L(res.job_abilities:keyset()):sort()
-		log_corsairrolls(playerjobabilities, jobabilityids)
-	end
+	-- corsair
+	local playerjobabilities = S(windower.ffxi.get_abilities().job_abilities)
+	log_corsairrolls(playerjobabilities)
+	-- pup attachments
+	log_pupattachments()
 	
 	tab_logs.mmm_mazecount.completed = playertracker.mmm_mazecount
 	
@@ -849,20 +867,22 @@ log_exp = function()
 	playertracker.masterlevels_highest = highest_master_level
 end
 
-log_corsairrolls = function(playerjobabilities, jobabilityids)
+log_corsairrolls = function(playerjobabilities)
 	local output_list = {}
 	local total, obtained = 0, 0
-	for id in jobabilityids:it() do
+	local corsairrollsids = L(res.job_abilities:filter(function(job_ability)
+		return job_ability.type == "CorsairRoll"
+	end):keyset()):sort()
+	for id in corsairrollsids:it() do
 		local completion = false
-		if ((res.job_abilities[id].type == "CorsairRoll")) then
-			total = total + 1
-			if (playerjobabilities[id] == true) then
-				-- roll learned
-				obtained = obtained + 1
-				completion = true
-			end
-			table.insert(output_list, util.list_item(nil, res.job_abilities[id].en, completion))
+		total = total + 1
+		if (playerjobabilities[id] == true) or (playertracker.corsairrolls[id] == true) then
+			-- roll learned
+			obtained = obtained + 1
+			playertracker.corsairrolls[id] = true
+			completion = true
 		end
+		table.insert(output_list, util.list_item(nil, res.job_abilities[id].en, completion))
 	end
 	playertracker.CorsairRoll_total = total
 	if obtained > playertracker.CorsairRoll_completed then -- to avoid spam save()
@@ -877,11 +897,10 @@ log_corsairrolls = function(playerjobabilities, jobabilityids)
 	}
 end
 
-log_pupattachments = function(data)
-	local output_list = {}
+update_pupattachments = function(data)
 	local total, obtained = 0, 0
 	local pup_map = require('maps/pup')
-	local pup_data = {
+	local pup_bitfields = {
 		['Available Heads'] = data:sub(0x018+1, 0x018+4),
 		['Available Bodies'] = data:sub(0x01C+1, 0x01C+4),
 		['Fire Attachments'] = data:sub(0x038+1, 0x038+4),
@@ -893,21 +912,36 @@ log_pupattachments = function(data)
 		['Light Attachments'] = data:sub(0x050+1, 0x050+4),
 		['Dark Attachments'] = data:sub(0x054+1, 0x054+4),
 	}
-	for key, pupdata in pairs(pup_data) do
-		for id, name in pairs(pup_map[key]) do
-			local completion = false
+	for pupattachments_category, bitfield in pairs(pup_bitfields) do
+		for id, name in pairs(pup_map[pupattachments_category]) do
 			total = total + 1
-			if util.has_bit(pupdata, id) then
+			if util.has_bit(bitfield, id) then
 				obtained = obtained + 1
-				completion = true
+				playertracker.pupattachments[pupattachments_category][id] = true
 			end
-			table.insert(output_list, util.list_item(nil, name, completion))
 		end
 	end
 	playertracker.pupattachments_total = total
 	if obtained > playertracker.pupattachments_completed then -- to avoid spam save()
 		playertracker.pupattachments_completed = obtained
 		playertracker:save()
+	end
+end
+
+log_pupattachments = function()
+	local output_list = {}
+	local total, obtained = 0, 0
+	local pup_map = require('maps/pup')
+	for pupattachments_category, attachments in pairs(pup_map) do
+		for id, name in pairs(attachments) do
+			local completion = false
+			total = total + 1
+			if playertracker.pupattachments[pupattachments_category][id] == true then
+				obtained = obtained + 1
+				completion = true
+			end
+			table.insert(output_list, util.list_item(nil, name, completion))
+		end
 	end
 	tab_logs.pupattachments = {
 		name = tab_logs.pupattachments.name,
