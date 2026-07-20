@@ -1,6 +1,6 @@
 _addon.name     = 'xichecklist'
 _addon.author   = 'HiPotion'
-_addon.version  = '0.19.11'
+_addon.version  = '0.19.12'
 _addon.commands = {'xichecklist', 'xic', 'checklist', 'clist'}
 
 require('sets')
@@ -222,16 +222,16 @@ defaultplayertracker = {
 	emporox_unlocks = {}, -- {Menu Parameter Byte = true}
 	corsairrolls = {},
 	pupattachments = {
-		['Available Heads'] = {},
-		['Available Bodies'] = {},
-		['Fire Attachments'] = {},
-		['Ice Attachments'] = {},
-		['Wind Attachments'] = {},
-		['Earth Attachments'] = {},
-		['Thunder Attachments'] = {},
-		['Water Attachments'] = {},
-		['Light Attachments'] = {},
-		['Dark Attachments'] = {},
+		['Available_Heads'] = {},
+		['Available_Bodies'] = {},
+		['Fire_Attachments'] = {},
+		['Ice_Attachments'] = {},
+		['Wind_Attachments'] = {},
+		['Earth_Attachments'] = {},
+		['Thunder_Attachments'] = {},
+		['Water_Attachments'] = {},
+		['Light_Attachments'] = {},
+		['Dark_Attachments'] = {},
 	},
 	talk_to_npc = {
 		outpostnpc = false,
@@ -901,16 +901,16 @@ update_pupattachments = function(data)
 	local total, obtained = 0, 0
 	local pup_map = require('maps/pup')
 	local pup_bitfields = {
-		['Available Heads'] = data:sub(0x018+1, 0x018+4),
-		['Available Bodies'] = data:sub(0x01C+1, 0x01C+4),
-		['Fire Attachments'] = data:sub(0x038+1, 0x038+4),
-		['Ice Attachments'] = data:sub(0x03C+1, 0x03C+4),
-		['Wind Attachments'] = data:sub(0x040+1, 0x040+4),
-		['Earth Attachments'] = data:sub(0x044+1, 0x044+4),
-		['Thunder Attachments'] = data:sub(0x048+1, 0x048+4),
-		['Water Attachments'] = data:sub(0x04C+1, 0x04C+4),
-		['Light Attachments'] = data:sub(0x050+1, 0x050+4),
-		['Dark Attachments'] = data:sub(0x054+1, 0x054+4),
+		['Available_Heads'] = data:sub(0x018+1, 0x018+4),
+		['Available_Bodies'] = data:sub(0x01C+1, 0x01C+4),
+		['Fire_Attachments'] = data:sub(0x038+1, 0x038+4),
+		['Ice_Attachments'] = data:sub(0x03C+1, 0x03C+4),
+		['Wind_Attachments'] = data:sub(0x040+1, 0x040+4),
+		['Earth_Attachments'] = data:sub(0x044+1, 0x044+4),
+		['Thunder_Attachments'] = data:sub(0x048+1, 0x048+4),
+		['Water_Attachments'] = data:sub(0x04C+1, 0x04C+4),
+		['Light_Attachments'] = data:sub(0x050+1, 0x050+4),
+		['Dark_Attachments'] = data:sub(0x054+1, 0x054+4),
 	}
 	for pupattachments_category, bitfield in pairs(pup_bitfields) do
 		for id, name in pairs(pup_map[pupattachments_category]) do

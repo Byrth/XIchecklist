@@ -1,5 +1,5 @@
 return {
-	['Available Heads'] = {
+	['Available_Heads'] = {
 		--[0] = ".",
 		[1] = "Harlequin Head",
 		[2] = "Valoredge Head",
@@ -8,13 +8,13 @@ return {
 		[5] = "Soulsoother Head",
 		[6] = "Spiritreaver Head",
 	},
-	['Available Bodies'] = {
+	['Available_Bodies'] = {
 		[0] = "Harlequin Frame",
 		[1] = "Valoredge Frame",
 		[2] = "Sharpshot Frame",
 		[3] = "Stormwaker Frame",
 	},
-	['Fire Attachments'] = {
+	['Fire_Attachments'] = {
 		--[0] = ".",
 		[1] = "Strobe",
 		[2] = "Tension Spring",
@@ -37,7 +37,7 @@ return {
 		[17] = "Magniplug",
 		[18] = "Magniplug II",
 	},
-	['Ice Attachments'] = {
+	['Ice_Attachments'] = {
 		[1] = "Mana Booster",
 		[2] = "Loudspeaker",
 		[3] = "Scanner",
@@ -59,7 +59,7 @@ return {
 		[17] = "Arcanoclutch",
 		[18] = "Arcanoclutch II",
 	},
-	['Wind Attachments'] = {
+	['Wind_Attachments'] = {
 		[1] = "Accelerator",
 		[2] = "Scope",
 		[3] = "Pattern Reader",
@@ -78,7 +78,7 @@ return {
 		[15] = "Scope IV",
 		[16] = "Truesights",
 	},
-	['Earth Attachments'] = {
+	['Earth_Attachments'] = {
 		[1] = "Shock Absorber",
 		[2] = "Armor Plate",
 		[3] = "Analyzer",
@@ -94,7 +94,7 @@ return {
 		[12] = "Armor Plate IV",
 		[13] = "Shock Absorber III",
 	},
-	['Thunder Attachments'] = {
+	['Thunder_Attachments'] = {
 		[1] = "Stabilizer",
 		[2] = "Volt Gun",
 		[3] = "Heat Seeker",
@@ -111,7 +111,7 @@ return {
 		[13] = "Dynamo III",
 		[14] = "Stabilizer V",
 	},
-	['Water Attachments'] = {
+	['Water_Attachments'] = {
 		[1] = "Mana Jammer",
 		[2] = "Heatsink",
 		[3] = "Stealth Screen",
@@ -128,7 +128,7 @@ return {
 		[13] = "Mana Jammer IV",
 		[14] = "Mana Channeler II",
 	},
-	['Light Attachments'] = {
+	['Light_Attachments'] = {
 		[1] = "Auto-Repair Kit",
 		[2] = "Flashbulb",
 		[3] = "Damage Gauge",
@@ -146,7 +146,7 @@ return {
 		[14] = "Optic Fiber II",
 		[15] = "Damage Gauge II",
 	},
-	['Dark Attachments'] = {
+	['Dark_Attachments'] = {
 		[1] = "Mana Tank",
 		[2] = "Mana Converter",
 		[3] = "Mana Conserver",
