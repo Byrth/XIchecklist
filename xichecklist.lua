@@ -1,6 +1,6 @@
 _addon.name     = 'xichecklist'
 _addon.author   = 'HiPotion'
-_addon.version  = '0.19.12'
+_addon.version  = '0.19.13'
 _addon.commands = {'xichecklist', 'xic', 'checklist', 'clist'}
 
 require('sets')
@@ -345,6 +345,8 @@ defaulttab_logs = {
 	Abyssea = {name = 'Abyssea', completed = 0, total = 0, items = {}},
 	Mog_Garden = {name = 'Mog Garden', completed = 0, total = 0, items = {}},
 	Claim_Slips = {name = 'Claim Slips', completed = 0, total = 0, items = {}},
+	jobpoints = {name = 'Job Points', completed = 0, total = 46200, items = {}},
+	masterlevels = {name = 'Master Levels', completed = 0, total = 1100, items = {}},
 	--combatskills = {name = 'Combat Skills', completed = 0, total = 0, items = {}},
 }
 
@@ -836,35 +838,55 @@ log_spells = function(spelltype, playerspells, spellids, spells_exclusions)
 end
 
 log_exp = function()
+	local jp_output_list = {}
+	local ml_output_list = {}
 	local total_merit_upgrades = 0
 	local total_jp_spent = 0
 	local total_master_levels = 0
 	local highest_master_level = 0
 	local playerinfo = windower.ffxi.get_player()
 	-- merits points
-	if (type(playerinfo.merits) == 'table') then 
+	if (type(playerinfo.merits) == 'table') then
 		for merit, value in pairs(playerinfo.merits) do
 			total_merit_upgrades = total_merit_upgrades + value
 		end
 	end
 	playertracker.meritpoints_completed = total_merit_upgrades
 	-- job points
-	if (type(playerinfo.job_points) == 'table') then 
+	if (type(playerinfo.job_points) == 'table') then
 		for job, value in pairs(playerinfo.job_points) do
+			local completion = false
 			total_jp_spent = total_jp_spent + playerinfo.job_points[job].jp_spent
+			if playerinfo.job_points[job].jp_spent == 2100 then completion = true end
+			table.insert(jp_output_list, util.list_item(nil, job..' '..playerinfo.job_points[job].jp_spent..'/2100', completion))
 		end
 	end
 	playertracker.jobpoints_completed = math.floor(total_jp_spent/2100)
 	playertracker.jobpoints_total = 22
 	-- master levels
-	if (type(playerinfo.master_levels) == 'table') then 
+	if (type(playerinfo.master_levels) == 'table') then
 		for job, value in pairs(playerinfo.master_levels) do
+			local completion = false
 			total_master_levels = total_master_levels + playerinfo.master_levels[job]
+			if playerinfo.master_levels[job] == 50 then completion = true end
+			table.insert(ml_output_list, util.list_item(nil, job..' '..playerinfo.master_levels[job]..'/50', completion))
 			if (playerinfo.master_levels[job] > highest_master_level) then highest_master_level = playerinfo.master_levels[job] end
 		end
 	end
 	playertracker.masterlevels_completed = total_master_levels
 	playertracker.masterlevels_highest = highest_master_level
+	tab_logs.jobpoints = {
+		name = tab_logs.jobpoints.name,
+		completed = total_jp_spent,
+		total = 46200,
+		items = jp_output_list
+	}
+	tab_logs.masterlevels = {
+		name = tab_logs.masterlevels.name,
+		completed = total_master_levels,
+		total = 1100,
+		items = ml_output_list
+	}
 end
 
 log_corsairrolls = function(playerjobabilities)

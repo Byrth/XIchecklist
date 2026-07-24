@@ -562,7 +562,6 @@ end
 menus_util.handle_rienne = function(parseddata)
 	local nibble_table = util.fourbits_to_table(parseddata['Menu Parameters'])
 	local subdata = parseddata['Menu Parameters']:sub(17, 20)
-	
 	for idx, ergonlocus in pairs(menumaps.ergonlocus) do
 		if util.has_bit(subdata, idx) and not playertracker.ergonlocus[tostring(idx)] then
 			util.addon_log('Ergon Locus added: '..ergonlocus)

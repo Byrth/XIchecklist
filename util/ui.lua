@@ -41,7 +41,7 @@ tabs = {
         name = 'Other Content',
         items = L{},
 		button = {},
-		tabs = {'fishes', 'ergonlocus'},
+		tabs = {'fishes', 'ergonlocus', 'jobpoints', 'masterlevels'},
     },
 	{
         name = 'Key Items',
