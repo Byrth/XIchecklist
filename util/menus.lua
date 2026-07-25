@@ -3,6 +3,7 @@ local menumaps = require('../maps/maps_menus')
 local titlescontnt = require('../maps/titles_bycontent')
 local titlesexclusions = require('../maps/titles_exclusions')
 local titles_howtoobtain = require('../maps/titles_howtoobtain')
+local titleids = L(res.titles:keyset()):sort()
 menu_current = {
 	npcindex = nil,
 	zoneid = nil,
@@ -137,7 +138,7 @@ menus_util.log_protowaypoints = function()
 			complete = complete+1
 			completion = true
 		end
-		table.insert(output_list, util.list_item('proto-waypoint', name, completion))
+		table.insert(output_list, util.list_item(nil, name, completion))
 	end
 	playertracker.protowaypoints_completed = complete
 	playertracker.protowaypoints_total = total
@@ -249,7 +250,7 @@ menus_util.log_fishes = function()
 			completion = true
 		end
 		if (id) then
-			table.insert(output_list, util.list_item('fish', res.items[id].en, completion))
+			table.insert(output_list, util.list_item(nil, res.items[id].en, completion))
 		end
 	end
 	playertracker.fishes_completed = complete
@@ -291,7 +292,7 @@ menus_util.log_atmacitelevels = function()
 		end
 		local level = playertracker.atmacite_levels[tostring(key)] or 0
 		complete = complete+level
-		table.insert(output_list, util.list_item('atmacite', 'Lv. ('..level..'/15) ' .. atmacite.en, completion))
+		table.insert(output_list, util.list_item(nil, 'Lv. ('..level..'/15) ' .. atmacite.en, completion))
 	end
 	playertracker.atmacite_completed = complete
 	tab_logs.atmacite = {
@@ -347,8 +348,7 @@ menus_util.log_titles = function()
 	local total, complete = 0,0
 	local exclusions = titlesexclusions
 	if (trackermenusettings.showexcluded) then exclusions = S{} end
-	local ids = L(res.titles:keyset()):sort()
-	for id in ids:it() do
+	for id in titleids:it() do
 		total = total+1
 		local completion = false
 		local obtainmethod = ''

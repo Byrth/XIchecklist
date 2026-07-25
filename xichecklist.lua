@@ -1,6 +1,6 @@
 _addon.name     = 'xichecklist'
 _addon.author   = 'HiPotion'
-_addon.version  = '0.19.13'
+_addon.version  = '0.19.14'
 _addon.commands = {'xichecklist', 'xic', 'checklist', 'clist'}
 
 require('sets')
@@ -430,6 +430,25 @@ local cmds = {
 	scale = S{'scale'},
 }
 
+addon_setup = function()
+	-- setup value instead of recalling/filtering them everytime
+	local keyitem_exclusions = require('maps/keyitems_exclusions')
+	local spells_exclusions = require('maps/spells_exclusions')
+	
+	res_keyitems = res.key_items:filter(function(keyitem)
+		local hidden = trackermenusettings.showexcluded and keyitem_exclusions.hidden or S{}
+		return not keyitem_exclusions.excluded:contains(keyitem.id) and not hidden:contains(keyitem.id)
+	end)
+	corsairrollsids = L(res.job_abilities:filter(function(job_ability)
+		return job_ability.type == "CorsairRoll"
+	end):keyset()):sort()
+	spellids = L(res.spells:filter(function(spell)
+		return (not spell.unlearnable) and (not spells_exclusions[spell.id])
+	end):keyset()):sort()
+end
+
+addon_setup()
+
 update_maintab = function()
 	
 	tabs[1].items = L{}
@@ -750,48 +769,41 @@ end
 
 xichecklist_updatetabs = function()
 	if not player then return false end
+	--setup
 	local playerspells = windower.ffxi.get_spells()
-	local spellids = L(res.spells:keyset()):sort()
-	local spells_exclusions = require('maps/spells_exclusions')
-	log_spells('WhiteMagic', playerspells, spellids, spells_exclusions)
-	log_spells('BlackMagic', playerspells, spellids, spells_exclusions)
-	log_spells('SummonerPact', playerspells, spellids, spells_exclusions)
-	log_spells('Ninjutsu', playerspells, spellids, spells_exclusions)
-	log_spells('BardSong', playerspells, spellids, spells_exclusions)
-	log_spells('BlueMagic', playerspells, spellids, spells_exclusions)
-	log_spells('Geomancy', playerspells, spellids, spells_exclusions)
-	log_spells('Trust', playerspells, spellids, spells_exclusions)
-	
-	local keyitem_exclusions = require('maps/keyitems_exclusions')
 	local playerkeyitems = S(windower.ffxi.get_key_items())
-	log_keyitems('Permanent Key Items', playerkeyitems, keyitem_exclusions)
-	log_keyitems('Magical Maps', playerkeyitems, keyitem_exclusions)
-	log_keyitems('Mounts', playerkeyitems, keyitem_exclusions)
-	log_keyitems('Active Effects', playerkeyitems, keyitem_exclusions)
-	log_keyitems('Voidwatch', playerkeyitems, keyitem_exclusions)
-	log_keyitems('Abyssea', playerkeyitems, keyitem_exclusions)
-	log_keyitems('Mog Garden', playerkeyitems, keyitem_exclusions)
-	log_keyitems('Claim Slips', playerkeyitems, keyitem_exclusions)
-	
-	-- corsair
 	local playerjobabilities = S(windower.ffxi.get_abilities().job_abilities)
+	
+	log_spells('WhiteMagic', playerspells)
+	log_spells('BlackMagic', playerspells)
+	log_spells('SummonerPact', playerspells)
+	log_spells('Ninjutsu', playerspells)
+	log_spells('BardSong', playerspells)
+	log_spells('BlueMagic', playerspells)
+	log_spells('Geomancy', playerspells)
+	log_spells('Trust', playerspells)
+	
+	log_keyitems('Permanent Key Items', playerkeyitems)
+	log_keyitems('Magical Maps', playerkeyitems)
+	log_keyitems('Mounts', playerkeyitems)
+	log_keyitems('Active Effects', playerkeyitems)
+	log_keyitems('Voidwatch', playerkeyitems)
+	log_keyitems('Abyssea', playerkeyitems)
+	log_keyitems('Mog Garden', playerkeyitems)
+	log_keyitems('Claim Slips', playerkeyitems)
+	
 	log_corsairrolls(playerjobabilities)
-	-- pup attachments
 	log_pupattachments()
+	log_exp()
 	
 	tab_logs.mmm_mazecount.completed = playertracker.mmm_mazecount
-	
-	log_exp()
 end
 
-log_keyitems = function(category, playerkeyitems, keyitem_exclusions)
+log_keyitems = function(category, playerkeyitems)
 	local output_list = {}
-	local excluded = keyitem_exclusions.excluded
-	local hidden = keyitem_exclusions.hidden
-	if trackermenusettings.showexcluded then hidden = S{} end
 	local total, obtained = 0, 0
-	for id, keyitem in pairs(res.key_items) do
-		if keyitem.category == category and (not excluded:contains(id)) and (not hidden:contains(id)) then
+	for id, keyitem in pairs(res_keyitems) do
+		if res.key_items[id].category == category then
 			total = total + 1
 			local completion = false
 			if playerkeyitems[id] then
@@ -799,7 +811,7 @@ log_keyitems = function(category, playerkeyitems, keyitem_exclusions)
 				obtained = obtained + 1
 				completion = true
 			end
-			table.insert(output_list, util.list_item(nil, keyitem.en, completion))
+			table.insert(output_list, util.list_item(nil, res.key_items[id].en, completion))
 		end
 	end
 	playertracker[util.cleanspaces(category)..'_completed'] = obtained
@@ -812,12 +824,12 @@ log_keyitems = function(category, playerkeyitems, keyitem_exclusions)
 	}
 end
 
-log_spells = function(spelltype, playerspells, spellids, spells_exclusions)
+log_spells = function(spelltype, playerspells)
 	local output_list = {}
 	local total, obtained = 0, 0
 	for id in spellids:it() do
 		local completion = false
-		if ((res.spells[id].type == spelltype) and (not res.spells[id].unlearnable) and (not spells_exclusions[id])) then
+		if res.spells[id].type == spelltype then
 			total = total + 1
 			if (playerspells[id] == true) then
 				-- spell learned
@@ -892,9 +904,6 @@ end
 log_corsairrolls = function(playerjobabilities)
 	local output_list = {}
 	local total, obtained = 0, 0
-	local corsairrollsids = L(res.job_abilities:filter(function(job_ability)
-		return job_ability.type == "CorsairRoll"
-	end):keyset()):sort()
 	for id in corsairrollsids:it() do
 		local completion = false
 		total = total + 1
