@@ -71,6 +71,3 @@ the menu will only show missing items like quests,key items, spells, home points
 ![screenshot5](https://i.imgur.com/c9ZEjBP.png)
 
 - this thing is free to use/share/edit/anything i dont care what you do with it
-
-
-- need help mapping the warps_waypoints.lua correctly (assign numbers and #FS)
